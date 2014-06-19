@@ -2,12 +2,12 @@
 
 {{ define "content" }}
 	<h1>Movies</h1>
-	<ul>
+	<ul class="large-block-grid-5">
 		{{ range .Movies }}
-		<div>
-		<p>{{.Title}}</p>
-		<img src="http://image.tmdb.org/t/p/w342/{{.PosterPath}}"/>
-		</div>
+		<li>
+			<img src="http://image.tmdb.org/t/p/w342/{{.PosterPath}}"/>
+			<p>{{.Title}}</p>
+		</li>
 		{{ end }}
 	</ul>
 {{ end }}

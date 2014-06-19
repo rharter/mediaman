@@ -1,9 +1,11 @@
 package processor
 
 import (
-	"path/filepath"
 	"os"
 	"log"
+	"mime"
+	"path/filepath"
+	"strings"
 
 	. "github.com/rharter/mediaman/pkg/model"
 	"github.com/rharter/mediaman/pkg/database"
@@ -36,7 +38,11 @@ func processDir(path string) (chan string) {
 	go func() {
 		filepath.Walk(path, func(path string, info os.FileInfo, _ error)(err error) {
 			if !info.IsDir() {
-				chann <- path
+				ext := filepath.Ext(path)
+				mimetype := mime.TypeByExtension(ext)
+				if (strings.HasPrefix(mimetype, "video")) {
+					chann <- path
+				}
 			}
 			return
 		})

@@ -6,12 +6,19 @@
 		<title>{{ template "title" . }}</title>
 
 		<!-- import stylesheets -->
+		<link href="//cdn.jsdelivr.net/foundation/5.2.3/css/foundation.min.css" rel="stylesheet" type="text/css" />
 
 
 	</head>
 	<body>
 
+	<div class="row">
+	<div class="large-12 columns">
+
 	{{ template "content" . }}
+
+	</div>
+	</div>
 
 	{{ template "script" . }}
 
