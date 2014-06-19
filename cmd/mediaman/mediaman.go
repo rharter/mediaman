@@ -1,18 +1,98 @@
 package main
 
 import (
-	"fmt"
-	"github.com/rharter/go-tvdb"
+	"flag"
+	"log"
+	"net/http"
+
+	"github.com/bmizerany/pat"
+
+	"github.com/rharter/mediaman/pkg/handler"
+	"github.com/rharter/mediaman/pkg/database"
+)
+
+var (
+	// port the server will run on
+	port string
+
+	// database driver used to connect to the database
+	driver string
+
+	// driver specific connection information. In this
+	// case, it should be the location of the SQLite file
+	datasource string
+
+	// commit sha for the current build
+	version string
+
+	// optional flags for tls listener
+	sslcert string
+	sslkey string
 )
 
 func main() {
 
-	seriesList, err := tvdb.GetSeriesWithLang("Arrow", "en")
-	if (err != nil) {
-		fmt.Printf("Error finding series: %v", err)
+	// parse command line flags
+	flag.StringVar(&port, "port", ":8080", "")
+	flag.StringVar(&driver, "driver", "sqlite3", "")
+	flag.StringVar(&datasource, "datasource", "mediaman.sqlite", "")
+	flag.StringVar(&sslcert, "sslcert", "", "")
+	flag.StringVar(&sslkey, "sslkey", "", "")
+	flag.Parse()
+
+	// validate the TLS arguments
+	checkTLSFlags()
+
+	// setup database and handlers
+	if err := database.Init(driver, datasource); err != nil {
+		log.Fatal("Can't initialize database: ", err)
 	}
-	fmt.Printf("Found %d series\n", len(seriesList.Series))
-	for _, show := range seriesList.Series {
-		fmt.Printf("%+v\n", show)
+	setupHandlers()
+
+	// debug
+	log.Printf("starting mediaman version %s on port %s\n", version, port)
+
+	// start webserver using HTTPS or HTTP
+	if sslcert != "" && sslkey != "" {
+		panic(http.ListenAndServeTLS(port, sslcert, sslkey, nil))
+	} else {
+		panic(http.ListenAndServe(port, nil))
 	}
+}
+
+// Checks if the TLS flags were supplied correctly
+func checkTLSFlags() {
+	if sslcert != "" && sslkey == "" {
+		log.Fatal("invalid configuration: -sslkey unspecified, but -sslcert was specified.")
+	} else if sslcert == "" && sslkey != "" {
+		log.Fatal("invalid configuration: -sslcert unspecified, but -sslkey was specified.")
+	}
+}
+
+// Setup routes for serving dynamic content
+func setupHandlers() {
+
+	m := pat.New()
+	m.Get("/movies", handler.ErrorHandler(handler.MovieList))
+
+	m.Get("/libraries", handler.ErrorHandler(handler.LibraryList))
+	m.Post("/libraries", handler.ErrorHandler(handler.LibraryCreate))
+
+	m.Get("/libraries/:id/process", handler.ErrorHandler(handler.LibraryProcess))
+
+	// API
+	m.Get("/api/movies", handler.ErrorHandler(handler.MovieList))
+
+	m.Get("/api/libraries", handler.ErrorHandler(handler.LibraryList))
+	m.Post("/api/libraries", handler.ErrorHandler(handler.LibraryCreate))
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// standard header variables that should be set, for good measure.
+		w.Header().Add("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
+		w.Header().Add("X-Frame-Options", "DENY")
+		w.Header().Add("X-Content-Type-Options", "nosniff")
+		w.Header().Add("X-XSS-Protection", "1; mode=block")
+
+		m.ServeHTTP(w, r)
+	})
 }

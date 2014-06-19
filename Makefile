@@ -1,9 +1,10 @@
-SELFPKG := github.com/rharter/mediamanager
+SELFPKG := github.com/rharter/mediaman
 VERSION := 0.0.1
 SHA := $(shell git rev-parse --short HEAD)
 BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 PKGS := \
-database
+database \
+model
 PKGS := $(addprefix github.com/drone/drone/pkg/,$(PKGS))
 .PHONY := test $(PKGS)
 
@@ -18,7 +19,7 @@ build-dist:
 bump-deps: deps
 
 deps:
-	go get -u -t -b ./...
+	go get -u -t -v ./...
 
 # Embed static assets
 embed: js rice

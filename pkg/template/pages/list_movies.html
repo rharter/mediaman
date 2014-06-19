@@ -1,0 +1,16 @@
+{{ define "title" }}Movies • MediaManager{{ end }}
+
+{{ define "content" }}
+	<h1>Movies</h1>
+	<ul>
+		{{ range .Movies }}
+		<div>
+		<p>{{.Title}}</p>
+		<img src="http://image.tmdb.org/t/p/w342/{{.PosterPath}}"/>
+		</div>
+		{{ end }}
+	</ul>
+{{ end }}
+
+{{ define "script" }}
+{{ end }}
