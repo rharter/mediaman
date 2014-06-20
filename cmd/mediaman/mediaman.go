@@ -7,8 +7,8 @@ import (
 
 	"github.com/bmizerany/pat"
 
-	"github.com/rharter/mediaman/pkg/handler"
 	"github.com/rharter/mediaman/pkg/database"
+	"github.com/rharter/mediaman/pkg/handler"
 )
 
 var (
@@ -27,7 +27,7 @@ var (
 
 	// optional flags for tls listener
 	sslcert string
-	sslkey string
+	sslkey  string
 )
 
 func main() {
@@ -74,6 +74,11 @@ func setupHandlers() {
 
 	m := pat.New()
 	m.Get("/movies", handler.ErrorHandler(handler.MovieList))
+	m.Get("/movies/:id", handler.ErrorHandler(handler.MovieShow))
+
+	m.Get("/movies/:id/video", http.HandlerFunc(handler.MoviePlay))
+	m.Get("/movies/:id/transcode", http.HandlerFunc(handler.MovieTranscode))
+	m.Get("/videos/", http.StripPrefix("/videos/", http.FileServer(http.Dir("/tmp/videos"))))
 
 	m.Get("/libraries", handler.ErrorHandler(handler.LibraryList))
 	m.Post("/libraries", handler.ErrorHandler(handler.LibraryCreate))

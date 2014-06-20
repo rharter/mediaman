@@ -31,6 +31,8 @@ func FetchMetadataForMovie(movie *Movie) (err error) {
 		// Try to get the file name info from GuessIt
 		meta, err := guessit.Guess(movie.Filename)
 		if err != nil {
+			log.Printf("Failed to guess movie info: %+v", err)
+
 			// Fallback to simple filename guessing
 			filename := filepath.Base(movie.Filename)
 			extension := filepath.Ext(movie.Filename)

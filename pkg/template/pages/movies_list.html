@@ -5,7 +5,7 @@
 	<ul class="large-block-grid-5">
 		{{ range .Movies }}
 		<li>
-			<img src="http://image.tmdb.org/t/p/w342/{{.PosterPath}}"/>
+			<a href="/movies/{{.ID}}"><img src="http://image.tmdb.org/t/p/w342/{{.PosterPath}}"/></a>
 			<p>{{.Title}}</p>
 		</li>
 		{{ end }}
