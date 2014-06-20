@@ -1,20 +1,20 @@
 package processor
 
 import (
-	"path/filepath"
 	"log"
+	"path/filepath"
 
+	"github.com/rharter/go-guessit"
 	"github.com/rharter/go-tmdb"
 
-	. "github.com/rharter/mediaman/pkg/model"
 	"github.com/rharter/mediaman/pkg/database"
+	. "github.com/rharter/mediaman/pkg/model"
 )
 
 const (
 
 	// The TMDB API Key
 	TMDB_API_KEY = "082009c4d5bcbc92baea080023ae8b3d"
-
 )
 
 var con *tmdb.TMDB
@@ -28,9 +28,16 @@ func FetchMetadataForMovie(movie *Movie) (err error) {
 	if movie.Title != "" {
 		query = movie.Title
 	} else {
-		filename := filepath.Base(movie.Filename)
-		extension := filepath.Ext(movie.Filename)
-		query = filename[:len(filename)-len(extension)]
+		// Try to get the file name info from GuessIt
+		meta, err := guessit.Guess(movie.Filename)
+		if err != nil {
+			// Fallback to simple filename guessing
+			filename := filepath.Base(movie.Filename)
+			extension := filepath.Ext(movie.Filename)
+			query = filename[:len(filename)-len(extension)]
+		} else {
+			query = meta.Title
+		}
 	}
 	log.Printf("Fetching metadata for %s", query)
 

@@ -5,7 +5,7 @@ BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 PKGS := \
 database \
 model
-PKGS := $(addprefix github.com/drone/drone/pkg/,$(PKGS))
+PKGS := $(addprefix github.com/rharter/mediaman/pkg/,$(PKGS))
 .PHONY := test $(PKGS)
 
 all: embed build
@@ -27,7 +27,7 @@ embed: js rice
 	cd pkg/template && rice embed
 
 js:
-	cd cmd/mediaman/assets && find js -name "*.js" ! -name '.*' ! -name "main.js" -exec cat {} \; > js/main.js
+	#cd cmd/mediaman/assets && find js -name "*.js" ! -name '.*' ! -name "main.js" -exec cat {} \; > js/main.js
 
 test: $(PKGS)
 
