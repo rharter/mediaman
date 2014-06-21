@@ -29,10 +29,11 @@ embed: js rice
 js:
 	#cd cmd/mediaman/assets && find js -name "*.js" ! -name '.*' ! -name "main.js" -exec cat {} \; > js/main.js
 
-test: $(PKGS)
+test: 
+	go test -v ./...
 
-$(PKGS): godep
-	godep go text -v $@
+$(PKGS): 
+	go test -v $@
 
 clean: rice
 	cd cmd/mediaman && rice clean

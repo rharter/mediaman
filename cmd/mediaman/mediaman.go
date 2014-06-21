@@ -7,6 +7,7 @@ import (
 
 	"github.com/bmizerany/pat"
 
+	"github.com/rharter/mediaman/pkg/api"
 	"github.com/rharter/mediaman/pkg/database"
 	"github.com/rharter/mediaman/pkg/handler"
 )
@@ -73,6 +74,9 @@ func checkTLSFlags() {
 func setupHandlers() {
 
 	m := pat.New()
+
+	api.AddHandlers(m, "/api")
+
 	m.Get("/movies", handler.ErrorHandler(handler.MovieList))
 	m.Get("/movies/:id", handler.ErrorHandler(handler.MovieShow))
 
@@ -84,12 +88,6 @@ func setupHandlers() {
 	m.Post("/libraries", handler.ErrorHandler(handler.LibraryCreate))
 
 	m.Get("/libraries/:id/process", handler.ErrorHandler(handler.LibraryProcess))
-
-	// API
-	m.Get("/api/movies", handler.ErrorHandler(handler.MovieList))
-
-	m.Get("/api/libraries", handler.ErrorHandler(handler.LibraryList))
-	m.Post("/api/libraries", handler.ErrorHandler(handler.LibraryCreate))
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// standard header variables that should be set, for good measure.

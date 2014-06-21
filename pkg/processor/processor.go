@@ -1,14 +1,14 @@
 package processor
 
 import (
-	"os"
 	"log"
 	"mime"
+	"os"
 	"path/filepath"
 	"strings"
 
-	. "github.com/rharter/mediaman/pkg/model"
 	"github.com/rharter/mediaman/pkg/database"
+	. "github.com/rharter/mediaman/pkg/model"
 )
 
 func ProcessLibrary(library *Library) (err error) {
@@ -19,7 +19,11 @@ func ProcessLibrary(library *Library) (err error) {
 		movie, _ := database.GetMovieByPath(msg)
 
 		if movie.Filename == "" {
-			movie = NewMovie(msg)
+			movie, err = NewMovie(msg)
+			if err != nil {
+				log.Printf("Error creating new movie: %v", err)
+				return err
+			}
 		}
 
 		err = database.SaveMovie(movie)
@@ -28,19 +32,19 @@ func ProcessLibrary(library *Library) (err error) {
 			return err
 		}
 
-		queue.Add(&FetchMetadataTask{Movie:movie})
+		queue.Add(&FetchMetadataTask{Movie: movie})
 	}
 	return nil
 }
 
-func processDir(path string) (chan string) {
+func processDir(path string) chan string {
 	chann := make(chan string)
 	go func() {
-		filepath.Walk(path, func(path string, info os.FileInfo, _ error)(err error) {
+		filepath.Walk(path, func(path string, info os.FileInfo, _ error) (err error) {
 			if !info.IsDir() {
 				ext := filepath.Ext(path)
 				mimetype := mime.TypeByExtension(ext)
-				if (strings.HasPrefix(mimetype, "video")) {
+				if strings.HasPrefix(mimetype, "video") {
 					chann <- path
 				}
 			}
