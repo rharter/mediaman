@@ -1,8 +1,8 @@
 package database
 
 import (
-	"fmt"
 	"database/sql"
+	"fmt"
 
 	"github.com/rharter/mediaman/pkg/database/migrate"
 

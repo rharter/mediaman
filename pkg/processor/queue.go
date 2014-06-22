@@ -2,6 +2,7 @@ package processor
 
 import (
 	"log"
+
 	. "github.com/rharter/mediaman/pkg/model"
 )
 
@@ -25,7 +26,7 @@ func Start(workers int) *Queue {
 			var task *FetchMetadataTask
 			for {
 				// get work item (pointer) from the queue
-				task = <- queue
+				task = <-queue
 				if task == nil {
 					continue
 				}

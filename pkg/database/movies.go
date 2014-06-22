@@ -39,7 +39,7 @@ func GetMovie(id int64) (*Movie, error) {
 	return &movie, err
 }
 
-func GetMovieByPath(path string) (*Movie, error) {
+func GetMovieByFilename(path string) (*Movie, error) {
 	movie := Movie{}
 	err := meddler.QueryRow(db, &movie, movieFindPathStmt, path)
 	return &movie, err

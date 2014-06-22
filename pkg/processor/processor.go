@@ -16,7 +16,7 @@ func ProcessLibrary(library *Library) (err error) {
 	queue := Start(5)
 	chann := processDir(library.Path)
 	for msg := range chann {
-		movie, _ := database.GetMovieByPath(msg)
+		movie, _ := database.GetMovieByFilename(msg)
 
 		if movie.Filename == "" {
 			movie, err = NewMovie(msg)
