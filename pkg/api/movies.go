@@ -58,3 +58,29 @@ func MovieCreate(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 
 	return m, nil
 }
+
+// DELETE /api/movies/:id
+// Delete a movie identified by :id
+func MovieDelete(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	idstr := getPathParam(r, "id")
+	id, err := strconv.ParseInt(idstr, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	m, err := database.GetMovie(id)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, notFound{}
+		} else {
+			return nil, err
+		}
+	}
+
+	err = database.DeleteMovie(m.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, nil
+}
