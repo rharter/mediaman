@@ -57,4 +57,5 @@ func AddHandlers(m *pat.PatternServeMux, base string) {
 
 	// Libraries
 	m.Get(base+"/libraries", JsonHandler(LibraryList))
+	m.Put(base+"/libraries", JsonHandler(LibraryCreate))
 }
