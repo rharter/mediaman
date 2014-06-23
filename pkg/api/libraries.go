@@ -9,6 +9,7 @@ import (
 
 	"github.com/rharter/mediaman/pkg/database"
 	. "github.com/rharter/mediaman/pkg/model"
+	"github.com/rharter/mediaman/pkg/processor"
 )
 
 // GET /libraries
@@ -79,4 +80,23 @@ func LibraryDelete(w http.ResponseWriter, r *http.Request) (interface{}, error) 
 	}
 
 	return l, nil
+}
+
+// GET /libraries/:id/process
+// Processes a library of files to fetch metadata
+func LibraryProcess(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	idstr := getPathParam(r, "id")
+	id, err := strconv.ParseInt(idstr, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	library, err := database.GetLibrary(id)
+	if err != nil {
+		return nil, err
+	}
+
+	processor.ProcessLibrary(library)
+
+	return nil, nil
 }

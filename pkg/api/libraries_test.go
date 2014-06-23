@@ -160,3 +160,35 @@ func TestDeleteLibrary(t *testing.T) {
 		t.Fatalf("expected no results, got %v", l)
 	}
 }
+
+func TestProcessLibrary(t *testing.T) {
+	s := createTestServer()
+	defer s.Close()
+	defer os.Remove(TEST_DATABASE)
+
+	err := os.MkdirAll("/tmp/lib1", 0755)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	defer os.RemoveAll("/tmp/lib1")
+
+	_, err = os.Create("/tmp/lib1/Sintel (2013).mkv")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	l := testLibrary("l1", "/tmp/lib1")
+	err = database.SaveLibrary(l)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	r, err := http.Get(fmt.Sprintf("%s/api/libraries/%d/process", s.URL, l.ID))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if r.StatusCode != http.StatusOK {
+		t.Fatalf("expected statusCode 200, got %d", r.StatusCode)
+	}
+}
