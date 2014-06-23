@@ -54,4 +54,7 @@ func AddHandlers(m *pat.PatternServeMux, base string) {
 	m.Get(base+"/movies/:id", JsonHandler(MovieShow))
 	m.Put(base+"/movies", JsonHandler(MovieCreate))
 	m.Del(base+"/movies/:id", JsonHandler(MovieDelete))
+
+	// Libraries
+	m.Get(base+"/libraries", JsonHandler(LibraryList))
 }
