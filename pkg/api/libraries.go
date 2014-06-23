@@ -58,3 +58,25 @@ func LibraryCreate(w http.ResponseWriter, r *http.Request) (interface{}, error) 
 
 	return l, nil
 }
+
+// DELETE /libraries/:id
+// Deletes a library identified by :id
+func LibraryDelete(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	idstr := getPathParam(r, "id")
+	id, err := strconv.ParseInt(idstr, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	l, err := database.GetLibrary(id)
+	if err != nil {
+		return nil, err
+	}
+
+	err = database.DeleteLibrary(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return l, nil
+}

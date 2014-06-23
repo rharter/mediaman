@@ -134,3 +134,29 @@ func TestShowLibrary(t *testing.T) {
 	}
 
 }
+
+func TestDeleteLibrary(t *testing.T) {
+	s := createTestServer()
+	defer s.Close()
+	defer os.Remove(TEST_DATABASE)
+
+	l1 := testLibrary("l1", "/tmp/l1")
+	err := database.SaveLibrary(l1)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	r, err := Delete(s.URL + "/api/libraries/" + strconv.FormatInt(l1.ID, 10))
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	if r.StatusCode != http.StatusOK {
+		t.Fatalf("expected status code 200, got %d", r.StatusCode)
+	}
+
+	l, err := database.GetLibrary(l1.ID)
+	if err == nil {
+		t.Fatalf("expected no results, got %v", l)
+	}
+}
