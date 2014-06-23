@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -92,4 +93,44 @@ func TestCreateLibrary(t *testing.T) {
 	if l2.Path != l1.Path {
 		t.Errorf("expected path %q, got %q", l1.Path, l2.Path)
 	}
+}
+
+func TestShowLibrary(t *testing.T) {
+	s := createTestServer()
+	defer s.Close()
+	defer os.Remove(TEST_DATABASE)
+
+	l1 := testLibrary("l1", "/tmp/l1")
+	err := database.SaveLibrary(l1)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	r, err := http.Get(s.URL + "/api/libraries/" + strconv.FormatInt(l1.ID, 10))
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	if r.StatusCode != http.StatusOK {
+		t.Fatalf("expected status code 200, got %d", r.StatusCode)
+	}
+
+	var resp Library
+	err = json.NewDecoder(r.Body).Decode(&resp)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	if resp.ID != l1.ID {
+		t.Fatalf("expected library id %d, got %d", l1.ID, resp.ID)
+	}
+
+	if resp.Name != l1.Name {
+		t.Fatalf("expected library name %q, got %q", l1.Name, resp.Name)
+	}
+
+	if resp.Path != l1.Path {
+		t.Fatalf("expected library path %q, got %q", l1.Path, resp.Path)
+	}
+
 }

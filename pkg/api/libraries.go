@@ -1,9 +1,11 @@
 package api
 
 import (
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"net/http"
+	"strconv"
 
 	"github.com/rharter/mediaman/pkg/database"
 	. "github.com/rharter/mediaman/pkg/model"
@@ -13,6 +15,27 @@ import (
 // returns a list of libraries
 func LibraryList(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 	return database.ListLibraries()
+}
+
+// GET /api/libraries/:id
+// Shows details for a library with :id
+func LibraryShow(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	idstr := getPathParam(r, "id")
+	id, err := strconv.ParseInt(idstr, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	l, err := database.GetLibrary(id)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, notFound{}
+		} else {
+			return nil, err
+		}
+	}
+
+	return l, nil
 }
 
 // PUT /libraries
