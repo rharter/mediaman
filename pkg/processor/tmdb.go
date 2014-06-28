@@ -61,7 +61,7 @@ func FetchMetadataForMovie(movie *Movie) (err error) {
 	movie.PosterPath = match.PosterPath
 	movie.Adult = match.Adult
 	movie.Homepage = match.Homepage
-	movie.ImdbID = match.ImdbID
+	movie.ImdbId = match.ImdbID
 	movie.Overview = match.Overview
 	movie.Runtime = match.Runtime
 	movie.Tagline = match.Tagline

@@ -27,7 +27,7 @@ func testMovie() *Movie {
 		Adult:        true,
 		Genres:       "Genres",
 		Homepage:     "Homepage",
-		ImdbID:       "ImdbID",
+		ImdbId:       "ImdbId",
 		Overview:     "Overview",
 		Runtime:      140,
 		Tagline:      "Tagline",
@@ -99,8 +99,8 @@ func TestCreateMovie(t *testing.T) {
 		t.Errorf("Unexpected error: %v", err)
 	}
 
-	if returnedMovie.ID == 0 {
-		t.Errorf("expected non-zero movie ID, got %v", returnedMovie.ID)
+	if returnedMovie.Id == 0 {
+		t.Errorf("expected non-zero movie Id, got %v", returnedMovie.Id)
 	}
 
 	if returnedMovie.Title != movie.Title {
@@ -108,7 +108,7 @@ func TestCreateMovie(t *testing.T) {
 	}
 
 	// Check that it is actually in the database
-	_, err = database.GetMovie(returnedMovie.ID)
+	_, err = database.GetMovie(returnedMovie.Id)
 	if err != nil {
 		t.Errorf("Failed to find created movie in database: %v", err)
 	}
@@ -124,7 +124,7 @@ func TestDeleteMovie(t *testing.T) {
 		t.Errorf("unexpected error: %v", err)
 	}
 
-	r, err := Delete(s.URL + "/api/movies/" + strconv.FormatInt(m.ID, 10))
+	r, err := Delete(s.URL + "/api/movies/" + strconv.FormatInt(m.Id, 10))
 	if err != nil {
 		t.Errorf("unexpected error: %v", err)
 	}
@@ -139,12 +139,12 @@ func TestDeleteMovie(t *testing.T) {
 		t.Errorf("unexpected error: %v", err)
 	}
 
-	if m.ID != rm.ID {
-		t.Errorf("expected returned item id %d, got id %d", m.ID, rm.ID)
+	if m.Id != rm.Id {
+		t.Errorf("expected returned item id %d, got id %d", m.Id, rm.Id)
 	}
 
 	// Double check this doesn't exist in the database
-	if movie, err := database.GetMovie(m.ID); err == nil {
+	if movie, err := database.GetMovie(m.Id); err == nil {
 		t.Errorf("expected error fetching deleted movie, got %v", movie)
 	}
 }

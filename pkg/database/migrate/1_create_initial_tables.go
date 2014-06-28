@@ -41,6 +41,20 @@ func (r *rev1) Up(mg *MigrationDriver) error {
 	}); err != nil {
 		return err
 	}
+
+	if _, err := mg.CreateTable("series", []string{
+		t.Integer("id", PRIMARYKEY, AUTOINCREMENT),
+		t.String("language"),
+		t.String("title"),
+		t.String("overview"),
+		t.String("banner"),
+		t.String("imdb_id"),
+		t.Integer("series_id"),
+		t.Timestamp("created"),
+		t.Timestamp("updated"),
+	}); err != nil {
+		return err
+	}
 	return nil
 }
 

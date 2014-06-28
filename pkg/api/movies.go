@@ -47,8 +47,8 @@ func MovieCreate(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		return nil, err
 	}
 
-	if m.ID != 0 {
-		return nil, badRequest{errors.New("Movie already has an ID")}
+	if m.Id != 0 {
+		return nil, badRequest{errors.New("Movie already has an Id")}
 	}
 
 	err = database.SaveMovie(&m)
@@ -77,7 +77,7 @@ func MovieDelete(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		}
 	}
 
-	err = database.DeleteMovie(m.ID)
+	err = database.DeleteMovie(m.Id)
 	if err != nil {
 		return nil, err
 	}

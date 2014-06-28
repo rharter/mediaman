@@ -6,7 +6,7 @@ import (
 )
 
 type Movie struct {
-	ID           int64     `meddler:"id,pk"            json:"id"`
+	Id           int64     `meddler:"id,pk"            json:"id"`
 	Title        string    `meddler:"title"            json:"title"`
 	BackdropPath string    `meddler:"backdrop"         json:"backdrop"`
 	PosterPath   string    `meddler:"poster"           json:"poster"`
@@ -14,7 +14,7 @@ type Movie struct {
 	Adult        bool      `meddler:"adult"            json:"adult"`
 	Genres       string    `meddler:"genres"           json:"genres"`
 	Homepage     string    `meddler:"homepage"         json:"homepage"`
-	ImdbID       string    `meddler:"imdb_id"          json:"imdb_id"`
+	ImdbId       string    `meddler:"imdb_id"          json:"imdb_id"`
 	Overview     string    `meddler:"overview"         json:"overview"`
 	Runtime      int64     `meddler:"runtime"          json:"runtime"`
 	Tagline      string    `meddler:"tagline"          json:"tagline"`

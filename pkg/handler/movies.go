@@ -54,7 +54,7 @@ func MovieTranscode(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Printf("Starting transcoding session for file: %s", movie.Filename)
-	trans := transcoder.NewTranscoderSession(movie.ID, "/tmp/videos", movie.Filename)
+	trans := transcoder.NewTranscoderSession(movie.Id, "/tmp/videos", movie.Filename)
 
 	if err = trans.Open(); err != nil {
 		http.Error(w, err.Error(), 500)

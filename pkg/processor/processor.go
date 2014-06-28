@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/rharter/go-guessit"
+
 	"github.com/rharter/mediaman/pkg/database"
 	. "github.com/rharter/mediaman/pkg/model"
 )
@@ -16,24 +18,39 @@ func ProcessLibrary(library *Library) (err error) {
 	queue := Start(5)
 	chann := processDir(library.Path)
 	for msg := range chann {
-		movie, _ := database.GetMovieByFilename(msg)
-
-		if movie.Filename == "" {
-			movie, err = NewMovie(msg)
-			if err != nil {
-				log.Printf("Error creating new movie: %v", err)
-				return err
-			}
-		}
-
-		err = database.SaveMovie(movie)
+		meta, err := guessit.Guess(msg)
 		if err != nil {
-			log.Printf("Error saving movie: %+v", err)
 			return err
 		}
 
-		queue.Add(&FetchMetadataTask{Movie: movie})
+		switch meta.Type {
+		case "movie":
+			processMovie(msg, queue)
+		case "episode":
+			processEpisode(msg, queue)
+		}
 	}
+	return nil
+}
+
+func processMovie(path string, queue *Queue) error {
+	movie, _ := database.GetMovieByFilename(path)
+	if movie == nil || movie.Filename == "" {
+		movie, _ = NewMovie(path)
+	}
+
+	err := database.SaveMovie(movie)
+	if err != nil {
+		log.Printf("Error saving movie: %+v", err)
+		return err
+	}
+
+	queue.Add(&FetchMetadataTask{Movie: movie})
+	return nil
+}
+
+func processEpisode(path string, queue *Queue) error {
+	log.Printf("Not actually processing episode: %s", path)
 	return nil
 }
 

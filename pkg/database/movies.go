@@ -32,7 +32,7 @@ FROM movies
 ORDER BY title ASC
 `
 
-// Returns the Movie with the given ID.
+// Returns the Movie with the given Id.
 func GetMovie(id int64) (*Movie, error) {
 	movie := Movie{}
 	err := meddler.QueryRow(db, &movie, movieFindIdStmt, id)
@@ -47,7 +47,7 @@ func GetMovieByFilename(path string) (*Movie, error) {
 
 // Saves a Movie.
 func SaveMovie(movie *Movie) error {
-	if movie.ID == 0 {
+	if movie.Id == 0 {
 		movie.Created = time.Now().UTC()
 	}
 	movie.Updated = time.Now().UTC()
