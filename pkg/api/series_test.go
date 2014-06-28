@@ -125,3 +125,36 @@ func TestCreateSeries(t *testing.T) {
 		t.Errorf("Failed to find created series in database: %v", err)
 	}
 }
+
+func TestDeleteSeries(t *testing.T) {
+	s := createTestServer()
+	defer s.Close()
+	defer os.Remove(TEST_DATABASE)
+
+	var count int = 4
+	populateSampleSeries(t, count)
+
+	r, err := Delete(fmt.Sprintf("%s/api/series/%d", s.URL, 1))
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	if r.StatusCode != http.StatusOK {
+		t.Errorf("expected %d status code, got %d", http.StatusOK, r.StatusCode)
+	}
+
+	var rm Series
+	err = json.NewDecoder(r.Body).Decode(&rm)
+	if err != nil {
+		t.Errorf("unexpected error: %v", err)
+	}
+
+	if 1 != rm.Id {
+		t.Errorf("expected returned item id %d, got id %d", 1, rm.Id)
+	}
+
+	// Double check this doesn't exist in the database
+	if series, err := database.GetSeries(1); err == nil {
+		t.Errorf("expected error fetching deleted series, got %v", series)
+	}
+}

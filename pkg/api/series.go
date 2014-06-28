@@ -58,3 +58,29 @@ func SeriesCreate(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 
 	return s, nil
 }
+
+// DELETE /api/series/:id
+// Delete a series identified by :id
+func SeriesDelete(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	idstr := getPathParam(r, "id")
+	id, err := strconv.ParseInt(idstr, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	s, err := database.GetSeries(id)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, notFound{}
+		} else {
+			return nil, err
+		}
+	}
+
+	err = database.DeleteSeries(s.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return s, nil
+}

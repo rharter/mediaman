@@ -48,6 +48,12 @@ func SaveSeries(series *Series) error {
 	return meddler.Save(db, seriesTable, series)
 }
 
+// Deletes an existing Series.
+func DeleteSeries(id int64) error {
+	db.Exec("DELETE FROM series WHERE id = ?", id)
+	return nil
+}
+
 // Lists all Series
 func ListSeries() ([]*Series, error) {
 	var series []*Series
