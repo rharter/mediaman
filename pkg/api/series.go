@@ -2,10 +2,13 @@ package api
 
 import (
 	"database/sql"
+	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 
 	"github.com/rharter/mediaman/pkg/database"
+	. "github.com/rharter/mediaman/pkg/model"
 )
 
 // GET /api/movies
@@ -30,6 +33,27 @@ func SeriesShow(w http.ResponseWriter, r *http.Request) (interface{}, error) {
 		} else {
 			return nil, err
 		}
+	}
+
+	return s, nil
+}
+
+// PUT /api/series
+// Creates a new series
+func SeriesCreate(w http.ResponseWriter, r *http.Request) (interface{}, error) {
+	var s Series
+	err := json.NewDecoder(r.Body).Decode(&s)
+	if err != nil {
+		return nil, err
+	}
+
+	if s.Id != 0 {
+		return nil, badRequest{errors.New("Series already has an Id")}
+	}
+
+	err = database.SaveSeries(&s)
+	if err != nil {
+		return nil, err
 	}
 
 	return s, nil

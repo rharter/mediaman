@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/rharter/mediaman/pkg/database"
@@ -85,5 +86,42 @@ func TestGetSeries_ReturnsCorrectSeries(t *testing.T) {
 
 	if s1.Title != response.Title {
 		t.Errorf("expected title %q, got %q", s1.Title, response.Title)
+	}
+}
+
+func TestCreateSeries(t *testing.T) {
+	s := createTestServer()
+	defer s.Close()
+	defer os.Remove(TEST_DATABASE)
+
+	series := createTestSeries()
+	b, err := json.Marshal(series)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+
+	r, err := Put(s.URL+"/api/series", "application/json", strings.NewReader(fmt.Sprintf("%s", b)))
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+
+	var response Series
+	err = json.NewDecoder(r.Body).Decode(&response)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+
+	if response.Id == 0 {
+		t.Errorf("expected non-zero series Id, got %v", response.Id)
+	}
+
+	if response.Title != series.Title {
+		t.Errorf("expected matching titles, got %v", response)
+	}
+
+	// Check that it is actually in the database
+	_, err = database.GetSeries(response.Id)
+	if err != nil {
+		t.Errorf("Failed to find created series in database: %v", err)
 	}
 }
