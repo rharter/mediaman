@@ -89,6 +89,8 @@ func setupHandlers() {
 
 	m.Get("/libraries/:id/process", handler.ErrorHandler(handler.LibraryProcess))
 
+	m.Get("/series", handler.ErrorHandler(handler.SeriesList))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// standard header variables that should be set, for good measure.
 		w.Header().Add("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")

@@ -1,0 +1,16 @@
+{{ define "title" }}Series • MediaManager{{ end }}
+
+{{ define "content" }}
+	<h1>Series</h1>
+	<ul class="large-block-grid-5">
+		{{ range .Series }}
+		<li>
+			<a href="/series/{{.Id}}"><img src="{{.Poster}}"/></a>
+			<p>{{.Title}}</p>
+		</li>
+		{{ end }}
+	</ul>
+{{ end }}
+
+{{ define "script" }}
+{{ end }}

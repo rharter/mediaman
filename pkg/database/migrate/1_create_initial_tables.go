@@ -48,6 +48,8 @@ func (r *rev1) Up(mg *MigrationDriver) error {
 		t.String("title"),
 		t.String("overview"),
 		t.String("banner"),
+		t.String("fanart"),
+		t.String("poster"),
 		t.String("imdb_id"),
 		t.Integer("series_id"),
 		t.Timestamp("created"),
@@ -70,7 +72,20 @@ func (r *rev1) Up(mg *MigrationDriver) error {
 		t.String("language"),
 		t.String("rating"),
 		t.Integer("series_id"),
+		t.Integer("tvdb_series_id"),
 		t.String("imdb_id"),
+		t.String("filename"),
+		t.String("poster"),
+		t.Timestamp("created"),
+		t.Timestamp("updated"),
+	}); err != nil {
+		return err
+	}
+
+	if _, err := mg.CreateTable("seasons", []string{
+		t.Integer("id", PRIMARYKEY, AUTOINCREMENT),
+		t.Integer("season_number"),
+		t.Integer("series_id"),
 		t.Timestamp("created"),
 		t.Timestamp("updated"),
 	}); err != nil {
@@ -84,6 +99,15 @@ func (r *rev1) Down(mg *MigrationDriver) error {
 		return err
 	}
 	if _, err := mg.DropTable("libraries"); err != nil {
+		return err
+	}
+	if _, err := mg.DropTable("series"); err != nil {
+		return err
+	}
+	if _, err := mg.DropTable("episodes"); err != nil {
+		return err
+	}
+	if _, err := mg.DropTable("seasons"); err != nil {
 		return err
 	}
 	return nil

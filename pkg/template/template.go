@@ -37,6 +37,9 @@ func init() {
 
 		"movies_list.html",
 		"movies_show.html",
+
+		"series_list.html",
+
 		"404.html",
 	}
 

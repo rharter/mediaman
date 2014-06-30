@@ -68,9 +68,15 @@ func AddHandlers(m *pat.PatternServeMux, base string) {
 	m.Put(base+"/series", JsonHandler(SeriesCreate))
 	m.Del(base+"/series/:id", JsonHandler(SeriesDelete))
 
+	// Series season
+	m.Get(base+"/series/:id/seasons", JsonHandler(SeasonsList))
+
+	// Series Episodes
+	m.Get(base+"/series/:series_id/seasons/:season_num/episodes", JsonHandler(EpisodeList))
+
 	// Episode
-	m.Get(base+"/episodes", JsonHandler(EpisodeList))
 	m.Get(base+"/episodes/:id", JsonHandler(EpisodeShow))
 	m.Put(base+"/episodes", JsonHandler(EpisodeCreate))
 	m.Del(base+"/episodes/:id", JsonHandler(EpisodeDelete))
+	m.Get(base+"/series/:id/episodes", JsonHandler(SeriesEpisodeList))
 }

@@ -12,21 +12,27 @@ const seriesTable = "series"
 
 // SQL Query to retrieve a series by it's unique database key
 const seriesFindIdStmt = `
-SELECT id, language, title, overview, banner, imdb_id, 
+SELECT id, language, title, overview, banner, poster, fanart, imdb_id, 
 	series_id, created, updated
 FROM series WHERE id = ?
 `
 
+const seriesByNameStmt = `
+SELECT id, language, title, overview, banner, poster, fanart, imdb_id,
+	series_id, created, updated
+FROM series WHERE title = ?
+`
+
 // SQL Query to retrieve a series by it's path name
 const seriesFindPathStmt = `
-SELECT id, language, title, overview, banner, imdb_id, 
+SELECT id, language, title, overview, banner, poster, fanart, imdb_id, 
 	series_id, created, updated
 FROM series WHERE filename = ?
 `
 
 // SQL Query to retrieve a all seriess
 const seriesStmt = `
-SELECT id, language, title, overview, banner, imdb_id, 
+SELECT id, language, title, overview, banner, poster, fanart, imdb_id, 
 	series_id, created, updated
 FROM series
 ORDER BY title ASC
@@ -36,6 +42,12 @@ ORDER BY title ASC
 func GetSeries(id int64) (*Series, error) {
 	series := Series{}
 	err := meddler.QueryRow(db, &series, seriesFindIdStmt, id)
+	return &series, err
+}
+
+func GetSeriesByTitle(t string) (*Series, error) {
+	series := Series{}
+	err := meddler.QueryRow(db, &series, seriesByNameStmt, t)
 	return &series, err
 }
 

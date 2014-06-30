@@ -11,13 +11,15 @@ type Queue struct {
 }
 
 type FetchMetadataTask struct {
-	Movie *Movie
+	Movie   *Movie
+	Series  *Series
+	Episode *Episode
 }
 
 func Start(workers int) *Queue {
 	tasks := make(chan *FetchMetadataTask)
 
-	queue := &Queue{tasks: tasks}
+	q := &Queue{tasks: tasks}
 
 	log.Printf("Starting queue with %d workers.", workers)
 
@@ -34,12 +36,18 @@ func Start(workers int) *Queue {
 				log.Printf("Received task")
 
 				// Execute the task
-				FetchMetadataForMovie(task.Movie)
+				if task.Movie != nil {
+					FetchMetadataForMovie(task.Movie)
+				} else if task.Series != nil {
+					FetchMetadataForSeries(q, task.Series)
+				} else if task.Episode != nil {
+					FetchMetadataForEpisode(task.Episode)
+				}
 			}
 		}(tasks)
 	}
 
-	return queue
+	return q
 }
 
 func (q *Queue) Add(task *FetchMetadataTask) {

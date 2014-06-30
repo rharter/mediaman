@@ -15,19 +15,20 @@ import (
 
 func ProcessLibrary(library *Library) (err error) {
 	log.Printf("Processing library for path: %s", library.Path)
-	queue := Start(5)
+	queue := Start(20)
 	chann := processDir(library.Path)
 	for msg := range chann {
-		meta, err := guessit.Guess(msg)
+		filename := filepath.Base(msg)
+		meta, err := guessit.Guess(filename)
 		if err != nil {
 			return err
 		}
 
 		switch meta.Type {
 		case "movie":
-			processMovie(msg, queue)
+			//processMovie(msg, queue)
 		case "episode":
-			processEpisode(msg, queue)
+			processEpisode(msg, meta, queue)
 		}
 	}
 	return nil
@@ -49,8 +50,45 @@ func processMovie(path string, queue *Queue) error {
 	return nil
 }
 
-func processEpisode(path string, queue *Queue) error {
-	log.Printf("Not actually processing episode: %s", path)
+func processEpisode(path string, meta *guessit.GuessResult, queue *Queue) error {
+	episode, _ := database.GetEpisodeByFilename(path)
+	var fetchMetadataTask *FetchMetadataTask
+	if episode == nil || episode.Filename == "" {
+		s, err := database.GetSeriesByTitle(meta.Series)
+		if err != nil {
+			// Create and save a placeholder series
+			s = &Series{
+				Title: meta.Series,
+			}
+			err = database.SaveSeries(s)
+			if err != nil {
+				return err
+			}
+
+			// Queue a metadata refresh of the series data
+			fetchMetadataTask = &FetchMetadataTask{Series: s}
+		}
+
+		episode = &Episode{
+			Filename:      path,
+			Title:         meta.Title,
+			EpisodeNumber: uint64(meta.EpisodeNumber),
+			SeasonNumber:  uint64(meta.Season),
+			SeriesId:      s.Id,
+			TvdbSeriesId:  s.SeriesId,
+		}
+		err = database.SaveEpisode(episode)
+		if err != nil {
+			log.Println("Error saving movie")
+		}
+	}
+
+	if fetchMetadataTask != nil {
+		queue.Add(fetchMetadataTask)
+	} else {
+		queue.Add(&FetchMetadataTask{Episode: episode})
+	}
+
 	return nil
 }
 

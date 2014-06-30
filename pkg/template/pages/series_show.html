@@ -1,0 +1,18 @@
+{{ define "title" }}{{.Title}} • MediaManager{{ end }}
+
+{{ define "content" }}
+	<h1>{{.Title}}</h1>
+	<p>{{.Overview}}</p>
+
+	<ul class="large-block-grid-5">
+		{{ range .Seasons }}
+		<li>
+			<a href="/series/{{.Id}}"><img src="{{.Banner}}"/></a>
+			<p>{{.Title}}</p>
+		</li>
+		{{ end }}
+	</ul>
+{{ end }}
+
+{{ define "script" }}
+{{ end }}
