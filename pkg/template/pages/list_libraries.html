@@ -4,7 +4,7 @@
 	<h1>Libraries</h1>
 	<ul>
 		{{ range .Libraries }}
-		<li>{{.Name}}</li>
+		<li><a href="/libraries/{{.Id}}">{{.Name}}</a></li>
 		{{ end }}
 	</ul>
 {{ end }}

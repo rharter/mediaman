@@ -1,10 +1,12 @@
 package handler
 
 import (
-	"net/http"
 	"encoding/json"
-	"strconv"
+	"errors"
+	"fmt"
 	"log"
+	"net/http"
+	"strconv"
 
 	"github.com/rharter/mediaman/pkg/database"
 	. "github.com/rharter/mediaman/pkg/model"
@@ -23,6 +25,43 @@ func LibraryList(w http.ResponseWriter, r *http.Request) error {
 	}{libraries}
 
 	return RenderTemplate(w, r, "list_libraries.html", &data)
+}
+
+// Display a video list for a library
+func LibraryShow(w http.ResponseWriter, r *http.Request) error {
+	idstr := r.URL.Query().Get(":id")
+
+	id, err := strconv.ParseInt(idstr, 10, 64)
+	if err != nil {
+		return err
+	}
+
+	lib, err := database.GetLibrary(id)
+	if err != nil {
+		return err
+	}
+
+	switch lib.Type {
+	case "movies":
+		return movieList(lib, w, r)
+	default:
+		return errors.New(fmt.Sprintf("No handler to process library of type %s", lib.Type))
+	}
+}
+
+// For displaying movies, the displayed movies will always be the direct
+// decendant of the library's root directory.
+func movieList(l *Library, w http.ResponseWriter, r *http.Request) error {
+	vids, err := database.GetVideosForParent(l.RootId)
+	if err != nil {
+		return err
+	}
+
+	data := struct {
+		Videos []*Video
+	}{vids}
+
+	return RenderTemplate(w, r, "movies_list.html", data)
 }
 
 func LibraryCreate(w http.ResponseWriter, r *http.Request) error {
@@ -46,7 +85,7 @@ func LibraryProcess(w http.ResponseWriter, r *http.Request) error {
 	idstr := r.URL.Query().Get(":id")
 
 	log.Printf("Handling request to precess library: %s", idstr)
-	
+
 	id, err := strconv.ParseInt(idstr, 10, 64)
 	if err != nil {
 		return err

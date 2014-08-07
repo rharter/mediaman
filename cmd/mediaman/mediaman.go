@@ -81,6 +81,7 @@ func setupHandlers() {
 
 	m.Get("/libraries", handler.ErrorHandler(handler.LibraryList))
 	m.Post("/libraries", handler.ErrorHandler(handler.LibraryCreate))
+	m.Get("/libraries/:id", handler.ErrorHandler(handler.LibraryShow))
 
 	m.Get("/libraries/:id/process", handler.ErrorHandler(handler.LibraryProcess))
 

@@ -19,8 +19,9 @@ type Video struct {
 	Updated time.Time `meddler:"updated,localtime" json:"updated"`
 }
 
-func NewVideo(f string) *Video {
+func NewVideo(f string, p int64) *Video {
 	video := Video{}
 	video.File = f
+	video.ParentId = p
 	return &video
 }

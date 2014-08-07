@@ -12,28 +12,28 @@ const videoTable = "videos"
 
 // SQL Query to retrieve a video by it's unique database key
 const videoFindIdStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated, SELECT id, type, name, path, created, updated, last_scan
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
 FROM videos
 WHERE id = ?
 `
 
 // SQL Query to retrieve a video by parent id
 const videoFindParentStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated, SELECT id, type, name, path, created, updated, last_scan
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
 FROM videos
 WHERE parent_id = ?
 `
 
 // SQL Query to retrieve a video by filename
 const videoFindFileStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated, SELECT id, type, name, path, created, updated, last_scan
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
 FROM videos
 WHERE file = ?
 `
 
 // SQL Query to retrieve all videos
 const videoStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated, SELECT id, type, name, path, created, updated, last_scan
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
 FROM videos
 `
 
@@ -44,7 +44,7 @@ func GetVideo(id int64) (*Video, error) {
 	return &video, err
 }
 
-// Returns a video with a given filename.
+// Returns all videos belonging to parent id
 func GetVideosForParent(id int64) ([]*Video, error) {
 	var videos []*Video
 	err := meddler.QueryAll(db, &videos, videoFindParentStmt, id)

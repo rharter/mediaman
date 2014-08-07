@@ -3,7 +3,7 @@
 {{ define "content" }}
 	<h1>{{.Title}}</h1>
 	<video width="1280" height="720" controls>
-		<source src="/movies/{{.ID}}/transcode" type="vnd.apple.mpegURL" />
+		<source src="/videos/{{.Id}}/transcode" type="vnd.apple.mpegURL" />
 		<!-- <source src="/movies/{{.ID}}/video" type="video/mp4" /> -->
 	</video>
 {{ end }}

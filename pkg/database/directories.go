@@ -12,28 +12,28 @@ const directoryTable = "directories"
 
 // SQL Query to retrieve a directory by it's unique database key
 const directoryFindIdStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated, SELECT id, type, name, path, created, updated, last_scan
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
 FROM directories
 WHERE id = ?
 `
 
 // SQL Query to retrieve a directory by parent directory
 const directoryFindParentStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated, SELECT id, type, name, path, created, updated, last_scan
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
 FROM directories
 WHERE parent_id = ?
 `
 
 // SQL Query to retrieve a directory by filename
 const directoryFindFileStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated, SELECT id, type, name, path, created, updated, last_scan
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
 FROM directories
 WHERE file = ?
 `
 
 // SQL Query to retrieve all directories
 const directoryStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated, SELECT id, type, name, path, created, updated, last_scan
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
 FROM directories
 `
 

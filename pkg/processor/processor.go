@@ -12,13 +12,13 @@ import (
 )
 
 func ProcessLibrary(library *Library) (err error) {
-	log.Printf("Processing library for path: %s", library.Path)
+	log.Printf("Processing library for path: %s", library.Root.File)
 	queue := Start(runtime.NumCPU()*2 + 1)
 
 	var chann chan FetchMetadataTask
 	switch library.Type {
 	case "movies":
-		chann = processMovieDir(library.Path)
+		chann = processMovieDir(library)
 	case "series":
 		log.Fatalf("Series processing hasn't been implemented yet.")
 	}
@@ -29,16 +29,16 @@ func ProcessLibrary(library *Library) (err error) {
 	return nil
 }
 
-func processMovieDir(path string) chan FetchMetadataTask {
+func processMovieDir(l *Library) chan FetchMetadataTask {
 	chann := make(chan FetchMetadataTask)
 	go func() {
-		filepath.Walk(path, func(path string, info os.FileInfo, _ error) (err error) {
+		filepath.Walk(l.Root.File, func(path string, info os.FileInfo, _ error) (err error) {
 			if !info.IsDir() {
 				ext := filepath.Ext(path)
 				mimetype := mime.TypeByExtension(ext)
 				if strings.HasPrefix(mimetype, "video") {
 					task := FetchMovieMetadataTask{
-						Video: NewVideo(path),
+						Video: NewVideo(path, l.Root.Id),
 					}
 					chann <- &task
 				}

@@ -15,7 +15,7 @@ func (r *rev1) Up(mg *MigrationDriver) error {
 		t.Integer("id", PRIMARYKEY, AUTOINCREMENT),
 		t.String("type"),
 		t.String("name"),
-		t.String("path"),
+		t.Integer("root_id"),
 		t.Timestamp("created"),
 		t.Timestamp("updated"),
 		t.Timestamp("last_scan"),
