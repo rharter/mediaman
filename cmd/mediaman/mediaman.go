@@ -77,12 +77,7 @@ func setupHandlers() {
 
 	api.AddHandlers(m, "/api")
 
-	m.Get("/movies", handler.ErrorHandler(handler.MovieList))
-	m.Get("/movies/:id", handler.ErrorHandler(handler.MovieShow))
-
-	m.Get("/movies/:id/video", http.HandlerFunc(handler.MoviePlay))
-	m.Get("/movies/:id/transcode", http.HandlerFunc(handler.MovieTranscode))
-	m.Get("/videos/", http.StripPrefix("/videos/", http.FileServer(http.Dir("/tmp/videos"))))
+	m.Get("/files/", http.StripPrefix("/files/", http.FileServer(http.Dir("/tmp/files"))))
 
 	m.Get("/libraries", handler.ErrorHandler(handler.LibraryList))
 	m.Post("/libraries", handler.ErrorHandler(handler.LibraryCreate))

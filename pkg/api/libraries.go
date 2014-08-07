@@ -47,8 +47,8 @@ func LibraryCreate(w http.ResponseWriter, r *http.Request) (interface{}, error) 
 		return nil, err
 	}
 
-	if l.ID != 0 {
-		return nil, badRequest{errors.New("Library already has an ID")}
+	if l.Id != 0 {
+		return nil, badRequest{errors.New("Library already has an Id")}
 	}
 
 	err = database.SaveLibrary(&l)

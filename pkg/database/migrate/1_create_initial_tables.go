@@ -10,29 +10,10 @@ func (r *rev1) Revision() int64 {
 
 func (r *rev1) Up(mg *MigrationDriver) error {
 	t := mg.T
-	if _, err := mg.CreateTable("movies", []string{
-		t.Integer("id", PRIMARYKEY, AUTOINCREMENT),
-		t.String("title"),
-		t.String("backdrop"),
-		t.String("poster"),
-		t.Timestamp("release_date"),
-		t.Bool("adult"),
-		t.String("genres"),
-		t.String("homepage"),
-		t.String("imdb_id"),
-		t.String("overview"),
-		t.Integer("runtime"),
-		t.String("tagline"),
-		t.Real("rating"),
-		t.Timestamp("created"),
-		t.Timestamp("updated"),
-		t.String("filename", UNIQUE),
-	}); err != nil {
-		return err
-	}
 
 	if _, err := mg.CreateTable("libraries", []string{
 		t.Integer("id", PRIMARYKEY, AUTOINCREMENT),
+		t.String("type"),
 		t.String("name"),
 		t.String("path"),
 		t.Timestamp("created"),
@@ -41,11 +22,46 @@ func (r *rev1) Up(mg *MigrationDriver) error {
 	}); err != nil {
 		return err
 	}
+
+	if _, err := mg.CreateTable("directories", []string{
+		t.Integer("id", PRIMARYKEY, AUTOINCREMENT),
+		t.String("file", UNIQUE),
+		t.Integer("parent_id"),
+		t.String("title"),
+		t.String("description"),
+		t.String("thumbnail"),
+		t.String("background"),
+		t.String("poster"),
+		t.String("banner"),
+		t.Timestamp("created"),
+		t.Timestamp("updated"),
+	}); err != nil {
+		return err
+	}
+
+	if _, err := mg.CreateTable("videos", []string{
+		t.Integer("id", PRIMARYKEY, AUTOINCREMENT),
+		t.String("file", UNIQUE),
+		t.Integer("parent_id"),
+		t.String("title"),
+		t.String("description"),
+		t.String("thumbnail"),
+		t.String("background"),
+		t.String("poster"),
+		t.String("banner"),
+		t.Timestamp("created"),
+		t.Timestamp("updated"),
+	}); err != nil {
+		return err
+	}
 	return nil
 }
 
 func (r *rev1) Down(mg *MigrationDriver) error {
-	if _, err := mg.DropTable("movies"); err != nil {
+	if _, err := mg.DropTable("videos"); err != nil {
+		return err
+	}
+	if _, err := mg.DropTable("directories"); err != nil {
 		return err
 	}
 	if _, err := mg.DropTable("libraries"); err != nil {

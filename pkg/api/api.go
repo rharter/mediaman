@@ -50,10 +50,10 @@ func JsonHandler(f func(w http.ResponseWriter, r *http.Request) (interface{}, er
 func AddHandlers(m *pat.PatternServeMux, base string) {
 
 	// Movies
-	m.Get(base+"/movies", JsonHandler(MovieList))
-	m.Get(base+"/movies/:id", JsonHandler(MovieShow))
-	m.Put(base+"/movies", JsonHandler(MovieCreate))
-	m.Del(base+"/movies/:id", JsonHandler(MovieDelete))
+	// m.Get(base+"/movies", JsonHandler(MovieList))
+	// m.Get(base+"/movies/:id", JsonHandler(MovieShow))
+	// m.Put(base+"/movies", JsonHandler(MovieCreate))
+	// m.Del(base+"/movies/:id", JsonHandler(MovieDelete))
 
 	// Libraries
 	m.Get(base+"/libraries", JsonHandler(LibraryList))

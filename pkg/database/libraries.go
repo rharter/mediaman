@@ -12,14 +12,14 @@ const libraryTable = "libraries"
 
 // SQL Query to retrieve a library by it's unique database key
 const libraryFindIdStmt = `
-SELECT id, name, path, created, updated, last_scan
+SELECT id, type, name, path, created, updated, last_scan
 FROM libraries
 WHERE id = ?
 `
 
 // SQL Query to retrieve all libraries
 const libraryStmt = `
-SELECT id, name, path, created, updated, last_scan
+SELECT id, type, name, path, created, updated, last_scan
 FROM libraries
 `
 
@@ -32,7 +32,7 @@ func GetLibrary(id int64) (*Library, error) {
 
 // Saves a Library.
 func SaveLibrary(library *Library) error {
-	if library.ID == 0 {
+	if library.Id == 0 {
 		library.Created = time.Now().UTC()
 	}
 	library.Updated = time.Now().UTC()

@@ -23,19 +23,31 @@ func init() {
 	con = tmdb.Open(TMDB_API_KEY)
 }
 
-func FetchMetadataForMovie(movie *Movie) (err error) {
+type FetchMovieMetadataTask struct {
+	Video *Video
+}
+
+// FetchMetadataTask interface
+func (t *FetchMovieMetadataTask) Fetch() error {
+
+	// See if we already have a video for this file
+	video, _ := database.GetVideoByFile(t.Video.File)
+	if video.Title != "" {
+		return nil
+	}
+
 	var query string
-	if movie.Title != "" {
-		query = movie.Title
+	if t.Video.Title != "" {
+		query = t.Video.Title
 	} else {
 		// Try to get the file name info from GuessIt
-		meta, err := guessit.Guess(movie.Filename)
+		meta, err := guessit.Guess(t.Video.File)
 		if err != nil {
-			log.Printf("Failed to guess movie info: %+v", err)
+			log.Printf("Failed to guess video info: %+v", err)
 
 			// Fallback to simple filename guessing
-			filename := filepath.Base(movie.Filename)
-			extension := filepath.Ext(movie.Filename)
+			filename := filepath.Base(t.Video.File)
+			extension := filepath.Ext(t.Video.File)
 			query = filename[:len(filename)-len(extension)]
 		} else {
 			query = meta.Title
@@ -56,17 +68,11 @@ func FetchMetadataForMovie(movie *Movie) (err error) {
 
 	// For now, we'll assume the first match is the winner
 	match := movies[0]
-	movie.Title = match.Title
-	movie.BackdropPath = match.BackdropPath
-	movie.PosterPath = match.PosterPath
-	movie.Adult = match.Adult
-	movie.Homepage = match.Homepage
-	movie.ImdbID = match.ImdbID
-	movie.Overview = match.Overview
-	movie.Runtime = match.Runtime
-	movie.Tagline = match.Tagline
-	movie.UserRating = match.VoteAverage
-	err = database.SaveMovie(movie)
+	t.Video.Title = match.Title
+	t.Video.Background = match.BackdropPath
+	t.Video.Poster = match.PosterPath
+	t.Video.Description = match.Overview
+	err = database.SaveVideo(t.Video)
 	if err != nil {
 		return err
 	}
