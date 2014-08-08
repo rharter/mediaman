@@ -31,14 +31,14 @@ func GetLibrary(id int64) (*Library, error) {
 		return &library, err
 	}
 
-	library.Root, err = GetDirectory(library.RootId)
+	library.Root, err = GetElement(library.RootId)
 
 	return &library, err
 }
 
 // Saves a Library.
 func SaveLibrary(library *Library) error {
-	err := SaveDirectory(library.Root)
+	err := SaveElement(library.Root)
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func DeleteLibrary(id int64) error {
 		return err
 	}
 
-	err = DeleteDirectory(lib.RootId)
+	err = DeleteElement(lib.RootId)
 	if err != nil {
 		return err
 	}
@@ -73,7 +73,7 @@ func ListLibraries() ([]*Library, error) {
 	err := meddler.QueryAll(db, &libraries, libraryStmt)
 
 	for _, lib := range libraries {
-		lib.Root, err = GetDirectory(lib.RootId)
+		lib.Root, err = GetElement(lib.RootId)
 		if err != nil {
 			return libraries, err
 		}

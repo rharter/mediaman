@@ -4,7 +4,11 @@ SHA := $(shell git rev-parse --short HEAD)
 BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 PKGS := \
 database \
-model
+model \
+api \
+handler \
+processor \
+transcoding
 PKGS := $(addprefix github.com/rharter/mediaman/pkg/,$(PKGS))
 .PHONY := test $(PKGS)
 
@@ -52,7 +56,8 @@ godep:
 	go get github.com/tools/godep
 
 rice:
-	go install github.com/GeertJohan/go.rice/rice
+	go get github.com/GeertJohan/go.rice
+	go get github.com/GeertJohan/go.rice/rice
 
 sample:
 	mkdir sample

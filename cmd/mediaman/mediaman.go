@@ -85,6 +85,11 @@ func setupHandlers() {
 
 	m.Get("/libraries/:id/process", handler.ErrorHandler(handler.LibraryProcess))
 
+	m.Get("/elements/:id", handler.ErrorHandler(handler.ElementShow))
+	m.Get("/elements/:id/video", http.HandlerFunc(handler.ElementPlay))
+	m.Get("/elements/:id/transcode", http.HandlerFunc(handler.ElementTranscode))
+	m.Get("/videos/parts/", http.StripPrefix("/videos/parts/", http.FileServer(http.Dir("/tmp/video_parts"))))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// standard header variables that should be set, for good measure.
 		w.Header().Add("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")

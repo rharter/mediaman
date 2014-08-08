@@ -3,10 +3,16 @@ package api
 import (
 	"io"
 	"net/http"
+	"strconv"
 )
 
 func getPathParam(r *http.Request, name string) string {
 	return r.URL.Query().Get(":" + name)
+}
+
+func getIdFromRequest(r *http.Request) (int64, error) {
+	idstr := r.URL.Query().Get(":id")
+	return strconv.ParseInt(idstr, 10, 64)
 }
 
 // Put executes a PUT request using the default http client

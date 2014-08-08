@@ -23,25 +23,10 @@ func (r *rev1) Up(mg *MigrationDriver) error {
 		return err
 	}
 
-	if _, err := mg.CreateTable("directories", []string{
+	if _, err := mg.CreateTable("elements", []string{
 		t.Integer("id", PRIMARYKEY, AUTOINCREMENT),
 		t.String("file", UNIQUE),
-		t.Integer("parent_id"),
-		t.String("title"),
-		t.String("description"),
-		t.String("thumbnail"),
-		t.String("background"),
-		t.String("poster"),
-		t.String("banner"),
-		t.Timestamp("created"),
-		t.Timestamp("updated"),
-	}); err != nil {
-		return err
-	}
-
-	if _, err := mg.CreateTable("videos", []string{
-		t.Integer("id", PRIMARYKEY, AUTOINCREMENT),
-		t.String("file", UNIQUE),
+		t.String("type"),
 		t.Integer("parent_id"),
 		t.String("title"),
 		t.String("description"),
@@ -58,7 +43,7 @@ func (r *rev1) Up(mg *MigrationDriver) error {
 }
 
 func (r *rev1) Down(mg *MigrationDriver) error {
-	if _, err := mg.DropTable("videos"); err != nil {
+	if _, err := mg.DropTable("elements"); err != nil {
 		return err
 	}
 	if _, err := mg.DropTable("directories"); err != nil {

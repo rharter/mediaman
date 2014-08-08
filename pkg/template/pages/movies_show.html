@@ -1,11 +1,10 @@
-{{ define "title" }}{{.Title}} • MediaManager{{ end }}
+{{ define "title" }}{{.Element.Title}} • MediaManager{{ end }}
 
 {{ define "content" }}
-	<h1>{{.Title}}</h1>
-	<video width="1280" height="720" controls>
-		<source src="/videos/{{.Id}}/transcode" type="vnd.apple.mpegURL" />
-		<!-- <source src="/movies/{{.ID}}/video" type="video/mp4" /> -->
-	</video>
+	<h1>{{.Element.Title}}</h1>
+	<video width="100%" controls autoplay poster="http://image.tmdb.org/t/p/w1280/{{.Element.Background}}">
+    <source src="/videos/{{.Element.Id}}/transcode" type="application/x-mpegURL" />
+		<source src="/videos/{{.Element.Id}}/video" type="{{.MimeType}}" />
 {{ end }}
 
 {{ define "script" }}

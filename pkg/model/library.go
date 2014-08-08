@@ -9,8 +9,8 @@ type Library struct {
 	Type string `meddler:"type"               json:"type"`
 	Name string `meddler:"name"               json:"name"`
 
-	RootId int64      `meddler:"root_id"  json:"-"`
-	Root   *Directory `meddler:"-"        json:"root"`
+	RootId int64    `meddler:"root_id"  json:"-"`
+	Root   *Element `meddler:"-"        json:"root"`
 
 	Created  time.Time `meddler:"created,utctime"    json:"created"`
 	Updated  time.Time `meddler:"updated,utctime"    json:"updated"`
@@ -21,6 +21,6 @@ func NewLibrary(n, t, p string) *Library {
 	library := Library{}
 	library.Name = n
 	library.Type = t
-	library.Root = &Directory{File: p}
+	library.Root = &Element{File: p, Type: "directory"}
 	return &library
 }

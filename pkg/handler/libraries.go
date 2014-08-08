@@ -52,13 +52,13 @@ func LibraryShow(w http.ResponseWriter, r *http.Request) error {
 // For displaying movies, the displayed movies will always be the direct
 // decendant of the library's root directory.
 func movieList(l *Library, w http.ResponseWriter, r *http.Request) error {
-	vids, err := database.GetVideosForParent(l.RootId)
+	vids, err := database.GetElementsForParent(l.RootId)
 	if err != nil {
 		return err
 	}
 
 	data := struct {
-		Videos []*Video
+		Elements []*Element
 	}{vids}
 
 	return RenderTemplate(w, r, "movies_list.html", data)

@@ -38,7 +38,7 @@ func processMovieDir(l *Library) chan FetchMetadataTask {
 				mimetype := mime.TypeByExtension(ext)
 				if strings.HasPrefix(mimetype, "video") {
 					task := FetchMovieMetadataTask{
-						Video: NewVideo(path, l.Root.Id),
+						Element: NewElement(path, l.Root.Id, "movie"),
 					}
 					chann <- &task
 				}

@@ -60,4 +60,8 @@ func AddHandlers(m *pat.PatternServeMux, base string) {
 	m.Get(base+"/libraries/:id", JsonHandler(LibraryShow))
 	m.Put(base+"/libraries", JsonHandler(LibraryCreate))
 	m.Del(base+"/libraries/:id", JsonHandler(LibraryDelete))
+
+	// Elements
+	m.Get(base+"/elements/:id", JsonHandler(ElementShow))
+	m.Get(base+"/elements/:id/children", JsonHandler(ElementList))
 }

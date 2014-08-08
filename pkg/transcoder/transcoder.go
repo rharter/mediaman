@@ -105,7 +105,7 @@ func (t *TranscodeSession) Close() error {
 
 	t.Pipe.Close()
 
-	// gracefully shit down transcode process
+	// gracefully shut down transcode process
 	if err := t.Proc.Signal(syscall.SIGINT); err != nil {
 		log.Printf("Sending signal to transcoder failed: %s", err)
 		// assume the transcoder process has finished

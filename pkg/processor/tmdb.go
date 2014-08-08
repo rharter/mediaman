@@ -24,30 +24,30 @@ func init() {
 }
 
 type FetchMovieMetadataTask struct {
-	Video *Video
+	Element *Element
 }
 
 // FetchMetadataTask interface
 func (t *FetchMovieMetadataTask) Fetch() error {
 
-	// See if we already have a video for this file
-	video, _ := database.GetVideoByFile(t.Video.File)
-	if video.Title != "" {
-		return nil
+	// See if we already have a element for this file
+	element, err := database.GetElementByFile(t.Element.File)
+	if err != nil {
+		element = t.Element
 	}
 
 	var query string
-	if t.Video.Title != "" {
-		query = t.Video.Title
+	if element.Title != "" {
+		query = element.Title
 	} else {
 		// Try to get the file name info from GuessIt
-		meta, err := guessit.Guess(t.Video.File)
+		meta, err := guessit.Guess(element.File)
 		if err != nil {
-			log.Printf("Failed to guess video info: %+v", err)
+			log.Printf("Failed to guess element info: %+v", err)
 
 			// Fallback to simple filename guessing
-			filename := filepath.Base(t.Video.File)
-			extension := filepath.Ext(t.Video.File)
+			filename := filepath.Base(element.File)
+			extension := filepath.Ext(element.File)
 			query = filename[:len(filename)-len(extension)]
 		} else {
 			query = meta.Title
@@ -68,11 +68,11 @@ func (t *FetchMovieMetadataTask) Fetch() error {
 
 	// For now, we'll assume the first match is the winner
 	match := movies[0]
-	t.Video.Title = match.Title
-	t.Video.Background = match.BackdropPath
-	t.Video.Poster = match.PosterPath
-	t.Video.Description = match.Overview
-	err = database.SaveVideo(t.Video)
+	element.Title = match.Title
+	element.Background = match.BackdropPath
+	element.Poster = match.PosterPath
+	element.Description = match.Overview
+	err = database.SaveElement(element)
 	if err != nil {
 		return err
 	}
