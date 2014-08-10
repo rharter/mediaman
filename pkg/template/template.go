@@ -33,6 +33,7 @@ func init() {
 	box := rice.MustFindBox("pages")
 
 	var files = []string{
+		"libraries_create.html",
 		"list_libraries.html",
 
 		"movies_list.html",

@@ -28,11 +28,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell", inline: <<-EOF
     set -e
 
+
     # System packages
     echo "Installing Base Packages"
     export DEBIAN_FRONTEND=noninteractive
     sudo apt-get update -qq
     sudo apt-get install -qqy --force-yes build-essential bzr git mercurial vim
+
+    # Disable strict host key checking
+    echo "Disabling strict host key checking for github"
+    touch /home/vagrant/.ssh/config
+    chown vagrant:vagrant /home/vagrant/.ssh/config 
+    chmod 600 /home/vagrant/.ssh/config
+    echo "StrictHostKeyChecking no" >> /home/vagrant/.ssh/config
 
 
     # Install Go
@@ -61,19 +69,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     fi
 
 
-    # Install Mediaman
-    echo "Building Mediaman"
-    cd $GOPATH/src/github.com/rharter/mediaman
-    make godep
-    export GOPATH=`godep path`:$GOPATH
-    export PATH=$PATH:$GOPATH/bin:`godep path`/bin
-    make embed
-    make build
-
-
     # Auto cd to drone install dir
     echo "cd /opt/go/src/github.com/rharter/mediaman" >> /home/vagrant/.bashrc
 
+    cd $GOPATH/src/github.com/rharter/mediaman
+    make godep
 
     # Cleanup
     sudo apt-get autoremove
@@ -81,7 +81,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     echo <<DONE
 PROVISIONING COMPLETE:
+
     vagrant ssh
+
+    # Install Mediaman
+    echo "Building Mediaman"
+    echo "$(whoami)"
+    cd $GOPATH/src/github.com/rharter/mediaman
+    make deps
+    export GOPATH=`godep path`:$GOPATH
+    export PATH=$PATH:$GOPATH/bin:`godep path`/bin
+    make embed build run
+    make build
     make run
     Visit http://localhost:8080/install
 DONE

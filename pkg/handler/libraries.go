@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -64,14 +63,20 @@ func movieList(l *Library, w http.ResponseWriter, r *http.Request) error {
 	return RenderTemplate(w, r, "movies_list.html", data)
 }
 
+func LibraryNew(w http.ResponseWriter, r *http.Request) error {
+	return RenderTemplate(w, r, "libraries_create.html", nil)
+}
+
 func LibraryCreate(w http.ResponseWriter, r *http.Request) error {
-	var library Library
-	err := json.NewDecoder(r.Body).Decode(&library)
-	if err != nil {
-		return err
+	library := &Library{
+		Name: r.FormValue("name"),
+		Type: r.FormValue("type"),
+		Root: &Element{
+			File: r.FormValue("path"),
+		},
 	}
 
-	err = database.SaveLibrary(&library)
+	err := database.SaveLibrary(library)
 	if err != nil {
 		return err
 	}

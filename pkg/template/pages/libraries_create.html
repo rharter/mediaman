@@ -1,0 +1,39 @@
+{{ define "title" }}Libraries • MediaManager{{ end }}
+
+{{ define "content" }}
+  <h1>New Libraries</h1>
+  <form method="POST" action="/libraries">
+    <div class="large-6 small-12 columns">
+      <div class="row">
+        <div class="large-12 columns">
+        <label>Name
+          <input type="text" name="name" />
+        </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-12 columns">
+        <label>Path
+          <input type="text" name="path" />
+        </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-12 columns">
+        <label>Type</label>
+        <input type="radio" name="type" value="movies"/><label>Movies</label>
+        <input type="radio" name="type" values="series"/><label>Series</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="large-3 end">
+          <input type="submit" value="Create"/>
+        </div>
+        </div>
+      </div>
+    </div>
+  </form>
+{{ end }}
+
+{{ define "script" }}
+{{ end }}

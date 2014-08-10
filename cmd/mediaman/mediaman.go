@@ -80,6 +80,7 @@ func setupHandlers() {
 	m.Get("/files/", http.StripPrefix("/files/", http.FileServer(http.Dir("/tmp/files"))))
 
 	m.Get("/libraries", handler.ErrorHandler(handler.LibraryList))
+	m.Get("/libraries/new", handler.ErrorHandler(handler.LibraryNew))
 	m.Post("/libraries", handler.ErrorHandler(handler.LibraryCreate))
 	m.Get("/libraries/:id", handler.ErrorHandler(handler.LibraryShow))
 

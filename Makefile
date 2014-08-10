@@ -22,8 +22,9 @@ build-dist:
 
 bump-deps: deps
 
-deps:
+deps: godep
 	go get -u -t -v ./...
+	godep restore
 
 # Embed static assets
 embed: js rice
