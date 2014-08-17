@@ -9,8 +9,8 @@
 {{ define "content" }}
 	<h1>{{.Element.Title}}</h1>
 	<video width="100%" controls autoplay poster="http://image.tmdb.org/t/p/w1280/{{.Element.Background}}">
-    <source src="/videos/{{.Element.Id}}/transcode" type="application/x-mpegURL" />
-		<source src="/videos/{{.Element.Id}}/video" type="{{.MimeType}}" />
+    <source src="/elements/{{.Element.Id}}/transcode" type="application/x-mpegURL" />
+		<source src="/elements/{{.Element.Id}}/video" type="{{.MimeType}}" />
 {{ end }}
 
 {{ define "script" }}
