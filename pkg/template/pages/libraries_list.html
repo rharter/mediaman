@@ -1,0 +1,24 @@
+{{ define "title" }}Libraries • MediaManager{{ end }}
+
+{{ define "libraries" }}
+{{ range .Libraries }}
+<li><a href="/libraries/{{.Id}}">{{.Name}}</a></li>
+{{ end }}
+{{ end }}
+
+{{ define "content" }}
+<div class="row header">
+	<h1>Libraries</h1>
+  <a href="/libraries/new">New Library</a>
+</div>
+<div class="row">
+	<ul>
+		{{ range .Libraries }}
+		<li><a href="/libraries/{{.Id}}">{{.Name}}</a></li>
+		{{ end }}
+	</ul>
+</div>
+{{ end }}
+
+{{ define "script" }}
+{{ end }}

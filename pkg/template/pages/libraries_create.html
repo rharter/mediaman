@@ -1,5 +1,11 @@
 {{ define "title" }}Libraries • MediaManager{{ end }}
 
+{{ define "libraries" }}
+{{ range .Libraries }}
+<li><a href="/libraries/{{.Id}}">{{.Name}}</a></li>
+{{ end }}
+{{ end }}
+
 {{ define "content" }}
   <h1>New Libraries</h1>
   <form method="POST" action="/libraries">

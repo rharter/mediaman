@@ -34,7 +34,7 @@ func init() {
 
 	var files = []string{
 		"libraries_create.html",
-		"list_libraries.html",
+		"libraries_list.html",
 
 		"movies_list.html",
 		"movies_show.html",

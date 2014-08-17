@@ -27,12 +27,19 @@ func ElementShow(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
+	libraries, err := database.ListLibraries()
+	if err != nil {
+		return err
+	}
+
 	data := struct {
-		Element  *Element
-		MimeType string
+		Libraries []*Library
+		Element   *Element
+		MimeType  string
 	}{
-		Element:  el,
-		MimeType: mime.TypeByExtension(filepath.Ext(el.File)),
+		Libraries: libraries,
+		Element:   el,
+		MimeType:  mime.TypeByExtension(filepath.Ext(el.File)),
 	}
 
 	return RenderTemplate(w, r, "movies_show.html", data)

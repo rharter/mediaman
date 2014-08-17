@@ -33,7 +33,7 @@ func processMovieDir(l *Library) chan FetchMetadataTask {
 	chann := make(chan FetchMetadataTask)
 	go func() {
 		filepath.Walk(l.Root.File, func(path string, info os.FileInfo, _ error) (err error) {
-			if !info.IsDir() {
+			if info != nil && !info.IsDir() {
 				ext := filepath.Ext(path)
 				mimetype := mime.TypeByExtension(ext)
 				if strings.HasPrefix(mimetype, "video") {

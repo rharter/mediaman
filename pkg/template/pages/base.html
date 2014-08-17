@@ -1,26 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="author" content="Ryan Harter">
-		<title>{{ template "title" . }}</title>
 
-		<!-- import stylesheets -->
-		<link href="//cdn.jsdelivr.net/foundation/5.2.3/css/foundation.min.css" rel="stylesheet" type="text/css" />
+<html>
+<head>
+  <title>Vengance | {{ template "title" . }}</title>
 
+  <link rel="stylesheet" href="stylesheets/normalize.css">
+	<link href="//cdn.jsdelivr.net/foundation/5.2.3/css/foundation.min.css" rel="stylesheet" type="text/css" />
 
-	</head>
-	<body>
+  <link rel="stylesheet" href="/assets/css/mediaman.css">
+</head>
 
-	<div class="row">
-	<div class="large-12 columns">
+<body>
+  <div id="container">
+  	<nav class="top-bar" data-topbar>
+	  	<ul class="title-area">
+	  		<li class="name">
+	  			<h1><a href="/">Vengence</a></h1>
+	  		</li>
+	  		<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+	  	</ul>
+	  	<section class="top-bar-section">
+	  	<ul class="right">
+		  	<li><a href="#">Search</a></li>
+	  	</ul>
+	  	</section>
+  	</nav>
 
-	{{ template "content" . }}
+  	<div class="row">
+	    <div class="large-9 push-3 columns">
 
-	</div>
-	</div>
+				{{ template "content" . }}
 
+			</div>
+
+  		<div class="large-3 push-9 columns">
+		  	<ul class="side-nav">
+		  		{{ template "libraries" . }}
+		  	</ul>
+		  </div>
+	   </div>
+    
+  </div>
+
+  <script src="main.js"></script> 
 	{{ template "script" . }}
-
-	</body>
+</body>
 </html>

@@ -23,7 +23,7 @@ func LibraryList(w http.ResponseWriter, r *http.Request) error {
 		Libraries []*Library `json:"libraries"`
 	}{libraries}
 
-	return RenderTemplate(w, r, "list_libraries.html", &data)
+	return RenderTemplate(w, r, "libraries_list.html", &data)
 }
 
 // Display a video list for a library
@@ -56,9 +56,15 @@ func movieList(l *Library, w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
+	libraries, err := database.ListLibraries()
+	if err != nil {
+		return err
+	}
+
 	data := struct {
-		Elements []*Element
-	}{vids}
+		Libraries []*Library
+		Elements  []*Element
+	}{Libraries: libraries, Elements: vids}
 
 	return RenderTemplate(w, r, "movies_list.html", data)
 }
@@ -103,5 +109,7 @@ func LibraryProcess(w http.ResponseWriter, r *http.Request) error {
 
 	processor.ProcessLibrary(library)
 
-	return RenderText(w, "Processing", 200)
+	http.Redirect(w, r, r.URL.Path, http.StatusSeeOther)
+
+	return nil
 }
