@@ -75,9 +75,10 @@ func movieList(l *Library, w http.ResponseWriter, r *http.Request) error {
 	}
 
 	data := struct {
+		Library   *Library
 		Libraries []*Library
 		Elements  []*Element
-	}{Libraries: libraries, Elements: vids}
+	}{Library: l, Libraries: libraries, Elements: vids}
 
 	return RenderTemplate(w, r, "movies_list.html", data)
 }
@@ -100,7 +101,10 @@ func LibraryCreate(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	http.Redirect(w, r, r.URL.Path, http.StatusSeeOther)
+	// Start a process run
+	processor.ProcessLibrary(library)
+
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 
 	return nil
 }
@@ -122,7 +126,7 @@ func LibraryProcess(w http.ResponseWriter, r *http.Request) error {
 
 	processor.ProcessLibrary(library)
 
-	http.Redirect(w, r, r.URL.Path, http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("/libraries/%d", id), http.StatusSeeOther)
 
 	return nil
 }

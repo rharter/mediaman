@@ -2,21 +2,29 @@
 
 {{ define "libraries" }}
 {{ range .Libraries }}
-<li><a href="/libraries/{{.Id}}">{{.Name}}</a></li>
+<li data-id="{{.Id}}"><a href="/libraries/{{.Id}}">{{.Name}}</a></li>
 {{ end }}
 {{ end }}
 
 {{ define "content" }}
-	<h1>Movies</h1>
-	<ul class="large-block-grid-5">
-		{{ range .Elements }}
-		<li>
-			<a href="/elements/{{.Id}}"><img src="http://image.tmdb.org/t/p/w342/{{.Poster}}"/></a>
-			<p>{{.Title}}</p>
-		</li>
-		{{ end }}
-	</ul>
+<div class="large-12 columns">
+  <div class="row header">
+    <h3 class="left">Movies</h3>
+    <a href="/libraries/{{.Library.Id}}/process"><i class="fi-refresh"></i></a>
+  </div>
+</div>
+<ul class="large-block-grid-5">
+	{{ range .Elements }}
+	<li>
+		<a href="/elements/{{.Id}}"><img src="http://image.tmdb.org/t/p/w342/{{.Poster}}"/></a>
+		<p>{{.Title}}</p>
+	</li>
+	{{ end }}
+</ul>
 {{ end }}
 
 {{ define "script" }}
+<script>
+setSelectedLibrary({{.Library.Id}});
+</script>
 {{ end }}

@@ -1,6 +1,7 @@
 package database
 
 import (
+	"database/sql"
 	"time"
 
 	. "github.com/rharter/mediaman/pkg/model"
@@ -84,6 +85,25 @@ func SaveElement(element *Element) error {
 // Deletes an existing Element.
 func DeleteElement(id int64) error {
 	db.Exec("DELETE FROM elements WHERE id = ?", id)
+	return nil
+}
+
+// Deletes an existing Element, and all of it's descendents.
+func DeleteElementCascade(id int64) error {
+	err := DeleteElement(id)
+	if err != nil {
+		return err
+	}
+	es, err := GetElementsForParent(id)
+	if err != nil && err != sql.ErrNoRows {
+		return err
+	}
+	for _, e := range es {
+		err = DeleteElementCascade(e.Id)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
