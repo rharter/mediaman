@@ -15,6 +15,7 @@ type Element struct {
 	Background  string `meddler:"background" json:"background"`
 	Poster      string `meddler:"poster" json:"poster"`
 	Banner      string `meddler:"banner" json:"banner"`
+	RemoteId    string `meddler:"remote_id" json:"remote_id"`
 
 	Created time.Time `meddler:"created,localtime" json:"created"`
 	Updated time.Time `meddler:"updated,localtime" json:"updated"`

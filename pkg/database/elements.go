@@ -12,28 +12,35 @@ const elementTable = "elements"
 
 // SQL Query to retrieve a element by it's unique database key
 const elementFindIdStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, remote_id, created, updated
 FROM elements
 WHERE id = ?
 `
 
+// SQL Query to retrieve a element by it's title
+const elementFindTitleStmt = `
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, remote_id, created, updated
+FROM elements
+WHERE title = ?
+`
+
 // SQL Query to retrieve a element by parent id
 const elementFindParentStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, remote_id, created, updated
 FROM elements
 WHERE parent_id = ?
 `
 
 // SQL Query to retrieve a element by filename
 const elementFindFileStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, remote_id, created, updated
 FROM elements
 WHERE file = ?
 `
 
 // SQL Query to retrieve all elements
 const elementStmt = `
-SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, created, updated
+SELECT id, file, parent_id, title, description, thumbnail, background, poster, banner, remote_id, created, updated
 FROM elements
 `
 
@@ -55,6 +62,13 @@ func GetElementsForParent(id int64) ([]*Element, error) {
 func GetElementByFile(f string) (*Element, error) {
 	element := Element{}
 	err := meddler.QueryRow(db, &element, elementFindFileStmt, f)
+	return &element, err
+}
+
+// Returns an element with a given name.
+func GetElementByTitle(t string) (*Element, error) {
+	element := Element{}
+	err := meddler.QueryRow(db, &element, elementFindTitleStmt, t)
 	return &element, err
 }
 

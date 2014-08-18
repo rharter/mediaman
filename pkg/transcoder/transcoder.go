@@ -77,7 +77,7 @@ func (t *TranscodeSession) Open() error {
 	attr.Files = []*os.File{pr}
 
 	t.OutputFile = filepath.Join(t.OutputDir, t.ID, "index.m3u8")
-	t.Proc, err = os.StartProcess("/usr/local/bin/ffmpeg", strings.Fields(t.buildTranscodeCommand()), &attr)
+	t.Proc, err = os.StartProcess("/usr/bin/ffmpeg", strings.Fields(t.buildTranscodeCommand()), &attr)
 	if err != nil {
 		log.Printf("Error starting process: %s", err)
 		t.setState(TS_STATE_FAILED)

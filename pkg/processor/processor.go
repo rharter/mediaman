@@ -20,7 +20,7 @@ func ProcessLibrary(library *Library) (err error) {
 	case "movies":
 		chann = processMovieDir(library)
 	case "series":
-		log.Fatalf("Series processing hasn't been implemented yet.")
+		chann = processTvShowDir(library)
 	}
 
 	for task := range chann {
@@ -39,6 +39,27 @@ func processMovieDir(l *Library) chan FetchMetadataTask {
 				if strings.HasPrefix(mimetype, "video") {
 					task := FetchMovieMetadataTask{
 						Element: NewElement(path, l.Root.Id, "movie"),
+					}
+					chann <- &task
+				}
+			}
+			return
+		})
+		defer close(chann)
+	}()
+	return chann
+}
+
+func processTvShowDir(l *Library) chan FetchMetadataTask {
+	chann := make(chan FetchMetadataTask)
+	go func() {
+		filepath.Walk(l.Root.File, func(path string, info os.FileInfo, _ error) (err error) {
+			if info != nil && !info.IsDir() {
+				ext := filepath.Ext(path)
+				mimetype := mime.TypeByExtension(ext)
+				if strings.HasPrefix(mimetype, "video") {
+					task := FetchSeriesMetadataTask{
+						Element: NewElement(path, l.Root.Id, "episode"),
 					}
 					chann <- &task
 				}

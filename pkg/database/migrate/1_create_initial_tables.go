@@ -34,6 +34,7 @@ func (r *rev1) Up(mg *MigrationDriver) error {
 		t.String("background"),
 		t.String("poster"),
 		t.String("banner"),
+		t.String("remote_id"),
 		t.Timestamp("created"),
 		t.Timestamp("updated"),
 	}); err != nil {
