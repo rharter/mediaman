@@ -1,49 +1,79 @@
 <!DOCTYPE html>
-
 <html>
 <head>
-  <title>Vengance | {{ template "title" . }}</title>
+  <title>Vengance Media Server | {{template "title" .}}</title>
 
-  <link rel="stylesheet" href="stylesheets/normalize.css">
-	<link href="//cdn.jsdelivr.net/foundation/5.2.3/css/foundation.min.css" rel="stylesheet" type="text/css" />
+  <link href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.3.1/css/foundation.min.css" rel="stylesheet" type="text/css" />
+  <link href="//cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css" rel="stylesheet" type="text/css" />
 
-  <link rel="stylesheet" href="/assets/css/mediaman.css">
+  <link rel="stylesheet" href="/css/mediaman.css">
+  {{template "head" .}}
 </head>
 
 <body>
-  <div id="container">
-  	<nav class="top-bar" data-topbar>
-	  	<ul class="title-area">
-	  		<li class="name">
-	  			<h1><a href="/">Vengence</a></h1>
-	  		</li>
-	  		<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
-	  	</ul>
-	  	<section class="top-bar-section">
-	  	<ul class="right">
-		  	<li><a href="#">Search</a></li>
-	  	</ul>
-	  	</section>
-  	</nav>
 
-  	<div class="row">
-	    <div class="large-9 push-3 columns">
-
-				{{ template "content" . }}
-
-			</div>
-
-  		<div class="large-3 pull-9 columns">
-        <h2 class="nav-header">Libraries</h2>
-		  	<ul class="side-nav">
-		  		{{ template "libraries" . }}
-		  	</ul>
-		  </div>
+  <div class="row">
+    <div class="large-12 columns">
+      <nav class="top-bar" data-topbar>
+        <ul class="title-area">
+          <li class="name">
+            <h1>
+              <a href="#">
+                Vengence Media Server
+              </a>
+            </h1>
+          </li>
+          <li class="toggle-topbar menu-icon"><a href="#"><span>menu</span></a></li>
+        </ul>
+ 
+        <section class="top-bar-section">
+          <ul class="left">
+            {{template "libraries" .}}
+            <li><a href="/libraries/new"><i class="fi-plus"></i> Add Library</a></li>
+          </ul>
+ 
+          <!-- <ul class="right">
+            <li class="search">
+              <form>
+                <input type="search">
+              </form>
+            </li>
+ 
+            <li class="has-button">
+              <a class="small button" href="#">Search</a>
+            </li>
+          </ul> -->
+        </section>
+      </nav>
     </div>
+  </div>
+  
+  <div class="row">    
+    <div class="large-12 columns">
+
+    {{template "content" .}}
+
+    </div>
+
+    <footer class="row">
+      <div class="large-12 columns">
+        <hr/>
+        <div class="row">
+          <div class="large-6 columns">
+            <p>&copy; Copyright no one at all. Go to town.</p>
+          </div>
+        </div>
+      </div> 
+    </footer>
     
   </div>
 
-  <script src="main.js"></script> 
-	{{ template "script" . }}
+  <script src="main.js"></script>
+  {{ template "script" . }}
+  
+
 </body>
 </html>
+
+{{ define "script" }}{{end}}
+{{ define "head" }}{{end}}

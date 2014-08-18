@@ -4,7 +4,9 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"strings"
 
+	"github.com/GeertJohan/go.rice"
 	"github.com/bmizerany/pat"
 
 	"github.com/rharter/mediaman/pkg/api"
@@ -48,6 +50,7 @@ func main() {
 	if err := database.Init(driver, datasource); err != nil {
 		log.Fatal("Can't initialize database: ", err)
 	}
+	setupStatic()
 	setupHandlers()
 
 	// debug
@@ -68,6 +71,13 @@ func checkTLSFlags() {
 	} else if sslcert == "" && sslkey != "" {
 		log.Fatal("invalid configuration: -sslcert unspecified, but -sslkey was specified.")
 	}
+}
+
+func setupStatic() {
+	box := rice.MustFindBox("assets")
+	http.Handle("/css/", http.FileServer(box.HTTPBox()))
+	http.Handle("/js/", http.FileServer(box.HTTPBox()))
+	http.Handle("/img/", http.FileServer(box.HTTPBox()))
 }
 
 // Setup routes for serving dynamic content
@@ -91,7 +101,17 @@ func setupHandlers() {
 	m.Get("/elements/:id/transcode", http.HandlerFunc(handler.ElementTranscode))
 	m.Get("/videos/parts/", http.StripPrefix("/videos/parts/", http.FileServer(http.Dir("/tmp/video_parts"))))
 
+	m.Get("/", handler.ErrorHandler(handler.Index))
+	m.Get("/index.html", handler.ErrorHandler(handler.Index))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// we have to strip the trailing slashes in order to
+		// correctly find a match.
+		if r.URL.Path != "/" && strings.HasSuffix(r.URL.Path, "/") {
+			http.Redirect(w, r, r.URL.Path[:len(r.URL.Path)-1], http.StatusSeeOther)
+			return
+		}
+
 		// standard header variables that should be set, for good measure.
 		w.Header().Add("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
 		w.Header().Add("X-Frame-Options", "DENY")

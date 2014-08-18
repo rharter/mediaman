@@ -33,6 +33,7 @@ func init() {
 	box := rice.MustFindBox("pages")
 
 	var files = []string{
+		"index.html",
 		"libraries_create.html",
 		"libraries_list.html",
 
@@ -46,6 +47,12 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+
+	// assets := rice.MustFindBox("../../cmd/mediaman/assets")
+	// mainjs, err := assets.String("js/main.js")
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	// loop through files and create templates
 	for _, file := range files {

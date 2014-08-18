@@ -59,7 +59,7 @@ func processTvShowDir(l *Library) chan FetchMetadataTask {
 				mimetype := mime.TypeByExtension(ext)
 				if strings.HasPrefix(mimetype, "video") {
 					task := FetchSeriesMetadataTask{
-						Element: NewElement(path, l.Root.Id, "episode"),
+						Element: NewElement(path, l.Root.Id, "series"),
 					}
 					chann <- &task
 				}

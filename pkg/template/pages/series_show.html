@@ -1,0 +1,22 @@
+{{ define "title" }}Movies • MediaManager{{ end }}
+
+{{ define "libraries" }}
+{{ range .Libraries }}
+<li><a href="/libraries/{{.Id}}">{{.Name}}</a></li>
+{{ end }}
+{{ end }}
+
+{{ define "content" }}
+	<h1>Movies</h1>
+	<ul class="large-block-grid-5">
+		{{ range .Elements }}
+		<li>
+			<a href="/elements/{{.Id}}"><img src="http://image.tmdb.org/t/p/w342/{{.Poster}}"/></a>
+			<p>{{.Title}}</p>
+		</li>
+		{{ end }}
+	</ul>
+{{ end }}
+
+{{ define "script" }}
+{{ end }}

@@ -12,6 +12,19 @@ import (
 	"github.com/rharter/mediaman/pkg/processor"
 )
 
+func Index(w http.ResponseWriter, r *http.Request) error {
+	libraries, err := database.ListLibraries()
+	if err != nil {
+		return err
+	}
+
+	data := struct {
+		Libraries []*Library
+	}{libraries}
+
+	return RenderTemplate(w, r, "index.html", &data)
+}
+
 // Display a library list
 func LibraryList(w http.ResponseWriter, r *http.Request) error {
 	libraries, err := database.ListLibraries()

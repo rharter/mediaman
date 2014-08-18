@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"net/http"
 	"log"
+	"net/http"
 )
 
-// ErrorHandler wraps the default http.HandleFunc to handl an 
+// ErrorHandler wraps the default http.HandleFunc to handl an
 // error as the return value
 type ErrorHandler func(w http.ResponseWriter, r *http.Request) error
 

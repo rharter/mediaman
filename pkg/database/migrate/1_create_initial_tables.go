@@ -25,7 +25,7 @@ func (r *rev1) Up(mg *MigrationDriver) error {
 
 	if _, err := mg.CreateTable("elements", []string{
 		t.Integer("id", PRIMARYKEY, AUTOINCREMENT),
-		t.String("file", UNIQUE),
+		t.String("file"),
 		t.String("type"),
 		t.Integer("parent_id"),
 		t.String("title"),

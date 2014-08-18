@@ -1,0 +1,70 @@
+{{ define "title" }}Vengence{{ end }}
+
+{{ define "libraries" }}
+{{ range .Libraries }}
+<li><a href="/libraries/{{.Id}}">{{.Name}}</a></li>
+{{ end }}
+{{ end }}
+
+{{ define "content" }}
+<div class="row">
+  <div class="large-12 columns">
+    <div class="row header">
+      <h4>Recently Added TV Shows</h4>
+    </div>
+    <div class="row">
+
+      <div class="poster large-3 small-6 columns">
+        <img src="http://placehold.it/250x350&text=Thumbnail"/>
+        <span class="title">Description</span>
+      </div>
+
+      <div class="poster large-3 small-6 columns">
+        <img src="http://placehold.it/250x350&text=Thumbnail"/>
+        <span class="title">Description</span>
+      </div>
+
+      <div class="poster large-3 small-6 columns">
+        <img src="http://placehold.it/250x350&text=Thumbnail"/>
+        <span class="title">Description</span>
+      </div>
+
+      <div class="poster large-3 small-6 columns">
+        <img src="http://placehold.it/250x350&text=Thumbnail"/>
+        <span class="title">Description</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="large-12 columns">
+    <div class="row header">
+      <h4>Recently Added Movies</h4>
+    </div>
+    <div class="row">
+
+      <div class="poster large-3 small-6 columns">
+        <img src="http://placehold.it/250x350&text=Thumbnail"/>
+        <span class="title">Description</span>
+      </div>
+
+      <div class="poster large-3 small-6 columns">
+        <img src="http://placehold.it/250x350&text=Thumbnail"/>
+        <span class="title">Description</span>
+      </div>
+
+      <div class="poster large-3 small-6 columns">
+        <img src="http://placehold.it/250x350&text=Thumbnail"/>
+        <span class="title">Description</span>
+      </div>
+
+      <div class="poster large-3 small-6 columns">
+        <img src="http://placehold.it/250x350&text=Thumbnail"/>
+        <span class="title">Description</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+{{ end }}
