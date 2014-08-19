@@ -17,8 +17,8 @@ all: embed build
 build:
 	go build -o bin/mediaman -ldflags "-X main.version $(VERSION)dev-$(SHA)" $(SELFPKG)/cmd/mediaman
 
-build-dist:
-	godep go build -o bin/mediaman -ldflags "-X main.version $(VERSION)-$(SHA)" $(SELFPKG)/vmd/mediaman
+build-dist: godep
+	godep go build -o bin/mediaman -ldflags "-X main.version $(VERSION)-$(SHA)" $(SELFPKG)/cmd/mediaman
 
 bump-deps: deps vendor
 
@@ -46,6 +46,7 @@ clean: rice
 	cd pkg/template && rice clean
 	rm -rf cmd/mediaman/mediaman
 	rm -rf cmd/mediaman/mediaman.sqlite
+	rm -rf deb/mediaman.deb
 	rm -rf bin/mediaman
 	rm -rf mediaman.sqlite
 	rm -rf /tmp/mediaman.sqlite
@@ -60,6 +61,13 @@ godep:
 rice:
 	go get github.com/GeertJohan/go.rice/rice
 	go build github.com/GeertJohan/go.rice/rice
+
+dpkg:
+	mkdir -p deb/mediaman/usr/local/bin
+	mkdir -p deb/mediaman/var/lib/mediaman
+	mkdir -p deb/mediaman/var/cache/mediaman
+	cp bin/mediaman deb/mediaman/usr/local/bin
+	-dpkg-deb --build deb/mediaman
 
 sample:
 	mkdir -p "sample"

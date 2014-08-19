@@ -1,6 +1,13 @@
-*~
-bin
+mediaman.sublime-project
+mediaman.sublime-workspace
 .DS_Store
+*~
+~*
 *.sqlite
+*.deb
+*.rice-box.go
+
+bin/mediaman
+cmd/mediaman/mediaman
+deb/mediaman/usr/local/bin/mediaman
 sample
-.vagrant

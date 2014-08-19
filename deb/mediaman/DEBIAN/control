@@ -1,0 +1,7 @@
+Package: mediaman
+Version: 0.1
+Section: base
+Priority: optional
+Architecture: amd64
+Maintainer: Ryan Harter <ryanjharter@gmail.com>
+Description: Media management server

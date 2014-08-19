@@ -1,0 +1,51 @@
+{
+	"ImportPath": "github.com/rharter/mediaman",
+	"GoVersion": "go1.3.1",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "bitbucket.org/kardianos/osext",
+			"Comment": "null-13",
+			"Rev": "5d3ddcf53a508cc2f7404eaebf546ef2cb5cdb6e"
+		},
+		{
+			"ImportPath": "github.com/GeertJohan/go.rice",
+			"Rev": "a4d0b5624c673fef4b517f350272136ced6bb5b1"
+		},
+		{
+			"ImportPath": "github.com/bmizerany/pat",
+			"Rev": "b8a35001b773c267eb260a691f4e5499a3531600"
+		},
+		{
+			"ImportPath": "github.com/daaku/go.zipexe",
+			"Rev": "44882fc939f4c58d87a60de34796c6cfb9623269"
+		},
+		{
+			"ImportPath": "github.com/dchest/uniuri",
+			"Rev": "9eb2cf09193567a3329b188db6e6f924a8e3347a"
+		},
+		{
+			"ImportPath": "github.com/go-sql-driver/mysql",
+			"Comment": "v1.2-8-g0b00042",
+			"Rev": "0b000424e546f305e0bd47856d5fcb904c1a0eb4"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-sqlite3",
+			"Rev": "1704ea522da54566fb41576db328ea3c44f702d8"
+		},
+		{
+			"ImportPath": "github.com/rharter/go-guessit",
+			"Rev": "024fd992f323c66f1a8addf66c53a98c2facb7bf"
+		},
+		{
+			"ImportPath": "github.com/rharter/go-tmdb",
+			"Rev": "1687518ebb7018edda6638c505b174489b51f3e3"
+		},
+		{
+			"ImportPath": "github.com/russross/meddler",
+			"Rev": "308c3d0e5e45f543a2eb6c787cbfe0db3880e220"
+		}
+	]
+}

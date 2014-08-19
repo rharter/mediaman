@@ -102,7 +102,7 @@ func LibraryCreate(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	// Start a process run
-	processor.ProcessLibrary(library)
+	go processor.ProcessLibrary(library)
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 
@@ -124,7 +124,7 @@ func LibraryProcess(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	processor.ProcessLibrary(library)
+	go processor.ProcessLibrary(library)
 
 	http.Redirect(w, r, fmt.Sprintf("/libraries/%d", id), http.StatusSeeOther)
 

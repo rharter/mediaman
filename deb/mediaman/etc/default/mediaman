@@ -1,0 +1,11 @@
+# Upstart configuration file for mediaman
+
+# Command line options:
+#
+#  -datasource="mediaman.sqlite": 
+#  -driver="sqlite3": 
+#  -port=":8080": 
+#  -sslcert="": 
+#  -sslkey="": 
+#
+#MEDIAMAN_OPTS="--port=:4040"

@@ -44,7 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 
     # Install Go
-    GOVERSION="1.2"
+    GOVERSION="1.3"
     GOTARBALL="go${GOVERSION}.linux-amd64.tar.gz"
     export GOROOT=/usr/local/go
     export GOPATH=/opt/go
